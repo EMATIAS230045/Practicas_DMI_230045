@@ -57,25 +57,77 @@ class _CounterFunctionsScreenState extends State<CounterFunctionsScreen> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton(
-            onPressed: () {
-              clickCounter++;
-              setState(() {});
-            },
-            child: const Icon(Icons.plus_one),
-          ),
-          
+          CustomButtom(icon: Icons.plus_one,
+          onPressed: (){
+            clickCounter ++;
+            setState(() {});
+          }),
+          const SizedBox(height: 15),
+          CustomButtom(icon: Icons.exposure_minus_1_outlined,onPressed: (){
+            clickCounter --;
+            setState(() {});
+          }),
+          const SizedBox(height: 15),
+          CustomButtom(icon: Icons.refresh_outlined,
+          onPressed: (){
+            clickCounter = 0;
+            setState(() {});
+          }),
           const SizedBox(height: 15),
 
-          FloatingActionButton(
-            onPressed: () {
-              clickCounter--;
-              setState(() {});
-            },
-            child: const Icon(Icons.exposure_minus_1_outlined),
-          ),
+          // FloatingActionButton(
+          //   shape: const StadiumBorder(),
+          //   onPressed: () {},
+          //   child: const Icon(Icons.exposure_minus_1_outlined),
+          // ),
+          
+          // const SizedBox(height: 15),
+
+          // FloatingActionButton(
+          //   shape: const StadiumBorder(),
+          //   onPressed: () {
+          //     clickCounter = 0;
+          //     setState(() {});
+          //   },
+          //   child: const Icon(Icons.refresh_outlined),
+          // ),
+          
         ],
       ),
     );
   }
 }
+
+class CustomButtom extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback? onPressed;
+
+
+
+  const CustomButtom( {
+    super.key,
+    required this.icon,
+    required this.onPressed
+
+
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(     
+      //shape: const StadiumBorder(),
+      enableFeedback: true, //Pone vibracion o sonidos
+      elevation: 100,//
+      onPressed: onPressed,
+      child: Icon(icon),
+    );
+  }
+}
+
+//+
+//clickCounter++;
+//setState(() {});
+//-
+//clickCounter--;
+              //setState(() {});
+
