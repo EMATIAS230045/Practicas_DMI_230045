@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CounterFunctionsScreen extends StatefulWidget {
   const CounterFunctionsScreen({super.key});
@@ -12,12 +13,20 @@ class _CounterFunctionsScreenState extends State<CounterFunctionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Evaluamos el color según el valor actual del contador
+    Color counterColor = Colors.blue;
+    if (clickCounter > 0) counterColor = Colors.green;
+    if (clickCounter < 0) counterColor = Colors.red;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Counter Functions Mati'),
+        title: Text(
+          'Counter Functions Mati',
+          style: GoogleFonts.workSans(),
+        ),
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh_rounded),
+            icon: const Icon(Icons.refresh_rounded),
             onPressed: () {
               setState(() {
                 clickCounter = 0;
@@ -26,39 +35,47 @@ class _CounterFunctionsScreenState extends State<CounterFunctionsScreen> {
           ),
         ],
       ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('$clickCounter',
-                style: const TextStyle( 
-                  fontSize: 160, fontWeight: FontWeight.w100 )),
-              Text('Click${clickCounter == 1 ? '' : 's' }', style: TextStyle( fontSize: 25 ))
-            ],
-          ),
-        ),
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FloatingActionButton(
-              onPressed: () {
-                clickCounter ++;
-                setState(() {});
-              },
-              child: const Icon( Icons.plus_one ),
+            Text(
+              '$clickCounter',
+              style: GoogleFonts.workSans( 
+                fontSize: 160, 
+                fontWeight: FontWeight.w100,
+                color: counterColor,
+              ),
             ),
-            
-            SizedBox(height: 15,),
-
-            FloatingActionButton(
-              onPressed: () {
-                clickCounter --;
-                setState(() {});
-              },
-              child: const Icon( Icons.exposure_minus_1_outlined ),
-            ),
+            Text(
+              'Click${clickCounter == 1 ? '' : 's'}', 
+              style: GoogleFonts.workSans(fontSize: 25),
+            )
           ],
-        )
-      );
+        ),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              clickCounter++;
+              setState(() {});
+            },
+            child: const Icon(Icons.plus_one),
+          ),
+          
+          const SizedBox(height: 15),
+
+          FloatingActionButton(
+            onPressed: () {
+              clickCounter--;
+              setState(() {});
+            },
+            child: const Icon(Icons.exposure_minus_1_outlined),
+          ),
+        ],
+      ),
+    );
   }
 }
