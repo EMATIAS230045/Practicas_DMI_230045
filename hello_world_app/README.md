@@ -1,4 +1,4 @@
-# Bitácora de Aprendizaje: Flutter + OpenAI Codex + Archify
+ñ# Bitácora de Aprendizaje: Flutter + OpenAI Codex + Archify
 
 **Proyecto:** `hello_world_app`  
 **Asignatura:** Desarrollo Móvil Integral  
