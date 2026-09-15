@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 class CounterFunctionsScreen extends StatefulWidget {
   const CounterFunctionsScreen({super.key});
@@ -102,28 +103,30 @@ class CustomButtom extends StatelessWidget {
   final IconData icon;
   final VoidCallback? onPressed;
 
-
-
-  const CustomButtom( {
+  const CustomButtom({
     super.key,
     required this.icon,
-    required this.onPressed
-
-
+    required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(     
-      //shape: const StadiumBorder(),
-      enableFeedback: true, //Pone vibracion o sonidos
-      elevation: 100,//
-      onPressed: onPressed,
+    return FloatingActionButton(
+      elevation: 10,
+      onPressed: () {
+        // 1. Sonido de clic del sistema
+        SystemSound.play(SystemSoundType.click);
+
+        // 2. Vibración directa del hardware
+        HapticFeedback.vibrate(); 
+
+        // 3. Ejecuta la función del botón (sumar, restar, etc.)
+        if (onPressed != null) onPressed!();
+      },
       child: Icon(icon),
     );
   }
 }
-
 //+
 //clickCounter++;
 //setState(() {});
