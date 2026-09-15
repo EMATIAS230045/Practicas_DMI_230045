@@ -7,6 +7,5 @@ ___
 | No. | Nombre | Descripcion | Potenciador | Estatus |
 | --- | --- | --- | --- | --- |
 | 1 | Metodologia de Evaluacion de la materia | Transcribir en libreta y comprender la metodologia y fechas de evaluacion de la asignatura | 5 | 🟢 Concluida |
-
 | 2 | Mi Primer Aplicacion Movil con Flutter | Codificar la app movil en el framework de Flutter Stateless y Satefull Widgets | 25 | 🟢 Concluida |
 
