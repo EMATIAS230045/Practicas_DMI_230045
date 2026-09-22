@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hello World App · Architecture</title>
+  <style>
+    :root { --bg:#08111f; --panel:#101d31; --line:#3d587d; --text:#e8f0ff; --muted:#9fb0cc; --amber:#ffc857; --blue:#57b7ff; --green:#66d19e; --pink:#fa8bbb; }
+    * { box-sizing:border-box; } body { margin:0; background:radial-gradient(circle at 20% 0%,#142d50,transparent 42%),var(--bg); color:var(--text); font:15px/1.45 Inter,ui-sans-serif,system-ui,sans-serif; }
+    header { padding:28px clamp(20px,5vw,72px) 20px; display:flex; justify-content:space-between; gap:20px; align-items:start; border-bottom:1px solid #213854; }
+    h1 { font-size:clamp(24px,3vw,38px); margin:0 0 4px; } p { margin:0; color:var(--muted); } .badge { padding:7px 11px; border:1px solid #496585; border-radius:999px; color:var(--amber); white-space:nowrap; }
+    main { max-width:1380px; margin:auto; padding:28px clamp(16px,4vw,56px) 50px; } .help { margin-bottom:20px; }
+    .diagram { position:relative; min-height:620px; display:grid; grid-template-columns:1fr 1.6fr 1fr; gap:28px; align-items:center; }
+    svg { position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; overflow:visible; } .edge { stroke:var(--line); stroke-width:2; fill:none; marker-end:url(#arrow); } .edge.active { stroke:var(--amber); stroke-width:3; }
+    .column { position:relative; z-index:1; display:grid; gap:18px; align-content:center; } .layer-label { font-size:11px; letter-spacing:.13em; font-weight:800; color:var(--muted); margin:0 0 -4px 4px; }
+    .node { text-align:left; width:100%; border:1px solid #314b6d; background:linear-gradient(145deg,#152943,#0d192b); color:var(--text); border-radius:15px; padding:17px; cursor:pointer; transition:.2s transform,.2s border-color,.2s box-shadow; box-shadow:0 10px 25px #0004; }
+    .node:hover,.node.active { transform:translateY(-3px); border-color:var(--amber); box-shadow:0 13px 32px #0008,0 0 0 1px #ffc85744; } .node.active { background:linear-gradient(145deg,#223c5d,#14243c); }
+    .node h2 { margin:0 0 5px; font-size:17px; } .node small { color:var(--muted); display:block; } .type { display:inline-block; margin-top:10px; padding:3px 8px; border-radius:20px; font-size:11px; font-weight:750; background:#284568; color:#cde4ff; }
+    .presentation .type { color:#ffe4a1; background:#604b1c; } .service .type { color:#b9f5d4; background:#174b3a; } .entry .type { color:#ffd0e2; background:#5e2946; }
+    .details { position:relative; z-index:2; margin-top:22px; padding:20px; min-height:112px; border:1px solid #294765; border-radius:15px; background:#0b1728cc; } .details h3 { margin:0 0 7px; color:var(--amber); } .details p { max-width:900px; }
+    .legend { display:flex; flex-wrap:wrap; gap:14px; margin-top:18px; color:var(--muted); font-size:13px; } .legend span::before { content:''; display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; background:var(--amber); } .legend span:nth-child(2)::before { background:var(--blue); } .legend span:nth-child(3)::before { background:var(--green); }
+    @media (max-width:760px) { header { display:block; } .badge { display:inline-block; margin-top:12px; } .diagram { grid-template-columns:1fr; min-height:0; } svg { display:none; } .column { gap:12px; } }
+  </style>
+</head>
+<body>
+  <header><div><h1>Hello World App architecture</h1><p>Interactive view generated from the Flutter <code>lib/</code> folder.</p></div><div class="badge">Click a component to trace it</div></header>
+  <main>
+    <p class="help">Select a node to highlight its direct dependencies and inspect its responsibility.</p>
+    <section class="diagram" id="diagram" aria-label="Flutter application architecture diagram">
+      <svg aria-hidden="true"><defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9z" fill="#3d587d"/></marker></defs></svg>
+      <div class="column entry"><p class="layer-label">APPLICATION ENTRY</p><button class="node" data-id="app"><h2>MyApp / main.dart</h2><small><code>runApp(MyApp())</code> → MaterialApp</small><span class="type">ENTRY POINT</span></button></div>
+      <div class="column presentation"><p class="layer-label">PRESENTATION LAYER · SCREENS</p><button class="node" data-id="functions"><h2>CounterFunctionsScreen</h2><small>Active <code>home</code>; counter UI, colour state, reset and actions</small><span class="type">STATEFUL SCREEN</span></button><button class="node" data-id="counter"><h2>CounterScreen</h2><small>Standalone basic counter screen; currently imported but not selected as home</small><span class="type">STATEFUL SCREEN</span></button><button class="node" data-id="button"><h2>CustomButtom</h2><small>Reusable FloatingActionButton wrapper for +, − and reset</small><span class="type">CUSTOM BUTTON</span></button></div>
+      <div class="column service"><p class="layer-label">DEVICE SERVICES</p><button class="node" data-id="sound"><h2>SystemSound</h2><small><code>SystemSound.play(SystemSoundType.click)</code></small><span class="type">SOUND / FLUTTER SERVICES</span></button><button class="node" data-id="haptics"><h2>HapticFeedback</h2><small><code>HapticFeedback.vibrate()</code></small><span class="type">HAPTICS / FLUTTER SERVICES</span></button></div>
+    </section>
+    <aside class="details" aria-live="polite"><h3 id="detail-title">Overview</h3><p id="detail-copy">The runtime path is MyApp → CounterFunctionsScreen → CustomButtom → device feedback services. Button callbacks then update the screen’s <code>clickCounter</code> through <code>setState</code>.</p></aside>
+    <div class="legend"><span>selected dependency path</span><span>presentation components</span><span>platform/device feedback</span></div>
+  </main>
+  <script>
+    const nodes = [...document.querySelectorAll('.node')], svg = document.querySelector('svg');
+    const links = [['app','functions'],['functions','button'],['button','sound'],['button','haptics']];
+    const info = { app:['MyApp / main.dart','Creates the Material 3 application and chooses CounterFunctionsScreen as its home screen.'], functions:['CounterFunctionsScreen','Primary presentation screen. It owns clickCounter, renders the counter and derives its red / blue / green colour. Its button callbacks increment, decrement or reset state.'], counter:['CounterScreen','A separate, simpler counter screen with its own state and a direct FloatingActionButton. It is imported by main.dart but is not on the active home route.'], button:['CustomButtom','A locally defined reusable button (the source name is CustomButtom). Before delegating to its supplied callback, it requests click sound and vibration.'], sound:['SystemSound','Flutter framework service that plays the platform’s standard click sound.'], haptics:['HapticFeedback','Flutter framework service that triggers a platform vibration.'] };
+    function draw(active) { svg.querySelectorAll('.edge').forEach(e=>e.remove()); const box=svg.getBoundingClientRect(); links.forEach(([a,b])=>{const A=document.querySelector(`[data-id="${a}"]`).getBoundingClientRect(),B=document.querySelector(`[data-id="${b}"]`).getBoundingClientRect();const x1=A.left+A.width/2-box.left,y1=A.top+A.height/2-box.top,x2=B.left+B.width/2-box.left,y2=B.top+B.height/2-box.top;const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',`M ${x1} ${y1} C ${(x1+x2)/2} ${y1}, ${(x1+x2)/2} ${y2}, ${x2} ${y2}`);p.setAttribute('class','edge '+((a===active||b===active)?'active':''));svg.append(p);}); }
+    nodes.forEach(n=>n.addEventListener('click',()=>{nodes.forEach(x=>x.classList.remove('active'));n.classList.add('active');const [title,copy]=info[n.dataset.id];document.querySelector('#detail-title').textContent=title;document.querySelector('#detail-copy').textContent=copy;draw(n.dataset.id);}));
+    window.addEventListener('resize',()=>draw(document.querySelector('.node.active')?.dataset.id)); draw();
+  </script>
+</body>
+</html>
