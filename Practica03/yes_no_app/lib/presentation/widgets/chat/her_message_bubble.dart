@@ -39,7 +39,7 @@ class _ImageBubble extends StatelessWidget {
     return ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Image.network(
-          'https://yesno.wtf/assets/no/20-56c4b19517aa69c8f7081939198341a4.gif',
+          'https://media.tenor.com/UaU4_VgrJw0AAAAj/age-of-empires-aoe.gif', //https://yesno.wtf/assets/no/20-56c4b19517aa69c8f7081939198341a4.gif',
           width: size.width * 0.7,
           height: 150,
           fit: BoxFit.cover,
