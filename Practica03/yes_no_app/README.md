@@ -99,8 +99,11 @@ Puedes revisar la estructura interactiva y mapeo de flujo de la aplicación gene
 ### 2. Respuesta Automatizada con GIF (Sí / No)
 *Detección de signo `?`, consulta a la API REST de `yesno.wtf` y renderizado de respuesta con GIF animado.*
 *SI*
-![Si](../images/S.jpeg)
+
+![Si](../images/Si.jpeg)
+
 *NO*
+
 ![No](../images/no.jpeg)
 ### 3. Respuesta Alternativa ("Tal vez") y Fallback
 *Respuesta condicional textual ($20\%$ de probabilidad) y comportamiento ante fallos de red.*
