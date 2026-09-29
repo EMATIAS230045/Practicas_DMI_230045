@@ -14,14 +14,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_)=> ChatProvider())
+        ChangeNotifierProvider(create: (_) => ChatProvider() )
       ],
-    child: MaterialApp(
-      title: 'Yes No App',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme( selectedColor: 1).theme(),
-      home: const ChatScreen()
-     )
+      child: MaterialApp(
+        title: 'Yes No App',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme( selectedColor: 0 ).theme(),
+        home: const ChatScreen()
+      ),
     );
   }
 }
