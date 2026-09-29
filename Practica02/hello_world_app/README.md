@@ -61,7 +61,7 @@ El flujo de interacción de la aplicación se basa en la arquitectura: **UI / Ev
 
 Puedes consultar la representación interactiva de la arquitectura generada por **Archify** en el siguiente enlace:
 
-🔗 **[Ver Diagrama Interactivo de Arquitectura en GitHub Pages](https://tu-usuario.github.io/tu-repositorio/architecture-diagram.html)**
+🔗 **[Ver Diagrama Interactivo de Arquitectura en GitHub Pages](https://EMATIAS230045.github.io/Practicas_DMI_230045/Practica02/hello_world_app/Arquitecture/architecture-diagram.html)**
 
 > *(Nota: Reemplaza la URL anterior por el enlace público correspondiente a tu repositorio en GitHub Pages).*
 
