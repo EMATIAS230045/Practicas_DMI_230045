@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "a379cd6b-8bc1-47dc-88fb-ecf5e8bd21d9",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "C:\\Users\\matias\\Desktop\\Flutter2\\Practicas_DMI_230045\\Practica02\\hello_world_app\\.archify\\architecture-flutter-app-20260928-183000\\candidate.json",
+  "output": "C:\\Users\\matias\\Desktop\\Flutter2\\Practicas_DMI_230045\\Practica02\\hello_world_app\\architecture-diagram.html",
+  "specification": {
+    "sha256": "25ca31c93abbed7e9fccdf068c53dd44da674edaba81de8b05467585bb7e5812",
+    "bytes": 39161
+  },
+  "artifact": {
+    "sha256": "e1b0fee08f9f5cde883a300b81825d8b89d044b7439f32b7f06daed04c988b9b",
+    "bytes": 783946
+  }
+}

@@ -1,42 +1,97 @@
-# Bitácora de Aprendizaje: Flutter + OpenAI Codex + Archify
+# 📱 Bitácora de Aprendizaje: Flutter + OpenAI Codex + Archify
 
-**Proyecto:** `hello_world_app`  
-**Asignatura:** Desarrollo Móvil Integral  
-**Fecha:** 14 de Septiembre de 2026  
+[![Flutter](https://img.shields.io/badge/FLUTTER-02569B?style=for-the-badge&logo=flutter&logoColor=white)](#)
+[![Dart](https://img.shields.io/badge/DART-0175C2?style=for-the-badge&logo=dart&logoColor=white)](#)
+[![OpenAI Codex](https://img.shields.io/badge/OPENAI_CODEX-412991?style=for-the-badge&logo=openai&logoColor=white)](#)
+[![HTML5](https://img.shields.io/badge/ARCHIFY-E34F26?style=for-the-badge&logo=html5&logoColor=white)](#)
 
----
-
-## 🚀 Resumen del Día
-En esta sesión se configuró un entorno de desarrollo asistido por IA mediante **Codex CLI** y **Archify**, logrando la generación automática de diagramas de arquitectura interactivos a partir del árbol de widgets de una aplicación en **Flutter**.
-
----
-
-## 🛠️ Tecnologías y Herramientas Utilizadas
-* **Flutter & Dart:** Desarrollo de la interfaz móvil y lógica de componentes.
-* **OpenAI Codex CLI:** Agente de IA en terminal para análisis e inspección del código fuente.
-* **Archify:** Herramienta de visualización de arquitectura de software.
-* **VS Code & Windows CMD:** Entorno de ejecución y gestión de terminales.
+* **Proyecto:** `hello_world_app`  
+* **Asignatura:** Desarrollo Móvil Integral  
+* **Fecha:** 14 de Septiembre de 2026  
 
 ---
 
-## 📚 Conceptos y Aprendizajes Clave
+## 📝 Descripción
 
-### 1. Desarrollo e Integración en Flutter
-* **Componentes Personalizados:** Creación y estructuración de widgets reutilizables como `CustomButton`.
-* **Manejo de Pantallas:** Organización de vistas en la capa de presentación (`CounterFunctionsScreen`).
-* **Servicios del Dispositivo:** Implementación de retroalimentación física y auditiva mediante `SystemSound.play()` y `HapticFeedback.vibrate()`.
-
-### 2. Automatización con Agentes de IA (Codex)
-* **Autenticación e Instalación:** Vinculación de la cuenta de ChatGPT con la interfaz de consola (`codex login`).
-* **Gestión de Sandbox y Permisos:** Control de accesos de lectura/escritura y ejecución en entornos seguros no administrativos (*non-admin sandbox*).
-* **Prompts Estructurados:** Adaptación de instrucciones para limitar el alcance del análisis únicamente a la capa de UI (`lib/`) sin dependencias externas innecesarias.
-
-### 3. Modelado de Arquitectura con Archify
-* Generación de mapas de arquitectura en formato **HTML interactivo** (`architecture-diagram.html`).
-* Mapeo visual de flujo de interacciones: **UI / Eventos de Usuario ➔ Componentes ➔ Servicios del Sistema**.
+Este repositorio contiene el desarrollo de la aplicación **`hello_world_app`**, un contador interactivo construido en **Flutter** y **Dart**. Además de implementar la lógica de estado y personalizaciones de UI, la práctica integra un flujo de trabajo de desarrollo asistido por Inteligencia Artificial utilizando **OpenAI Codex CLI** y **Archify** para la inspección de código y mapeo de arquitectura de software.
 
 ---
 
+## 🎯 Objetivo
+
+- Desarrollar una interfaz móvil interactiva de contador utilizando widgets reactivos (`StatefulWidget`, `StatelessWidget`), tipografía personalizada (*Architext*) y retroalimentación física y auditiva del dispositivo.
+- Configurar y utilizar agentes de IA en consola (**Codex CLI**) para auditar e inspeccionar la estructura interna de la capa de presentación (`lib/`).
+- Generar y desplegar diagramas de arquitectura web e interactivos automatizados mediante **Archify** para documentar el comportamiento de la aplicación.
+
+---
+
+## ⚙️ ¿Qué se realizó?
+
+Durante la sesión de desarrollo e integración se llevaron a cabo las siguientes actividades:
+
+1. **Desarrollo de Interfaz y Lógica Móvil:**
+   - Creación de componentes reutilizables como `CustomButton`.
+   - Organización de pantallas en la capa de presentación dentro de `CounterFunctionsScreen`.
+   - Implementación de retroalimentación de sistema mediante sonidos (`SystemSound.play()`) y vibración háptica (`HapticFeedback.vibrate()`).
+   - Lógica de cambio de color condicional según el valor actual del contador.
+
+2. **Automatización con Agentes de IA (Codex CLI):**
+   - Vinculación y autenticación con la consola a través de `codex login`.
+   - Ejecución controlada en entorno *non-admin sandbox* para garantizar la seguridad en permisos de lectura/escritura.
+   - Diseño de prompts estructurados para delimitar el análisis únicamente a los archivos de interfaz dentro del directorio `lib/`.
+
+3. **Generación de Diagrama de Arquitectura:**
+   - Extracción del árbol de widgets e interacciones para compilar un mapa interactivo en formato HTML (`architecture-diagram.html`).
+
+---
+
+## 📁 Archivos Principales Modificados
+
+| Archivo | Descripción / Responsabilidad |
+| :--- | :--- |
+| `lib/main.dart` | Configuración principal de la aplicación, definición del tema visual, carga de la fuente personalizada *Architext* y asignación de la pantalla inicial. |
+| `lib/presentation/screens/counter/counter_functions_screen.dart` | Contiene la lógica del contador, eventos de botones, colores condicionales según el valor numérico y la gestión del estado reactivo. |
+| `pubspec.yaml` | Registro y configuración de dependencias y de la tipografía personalizada utilizada en la interfaz de la aplicación. |
+
+---
+
+## 📐 Arquitectura
+
+El flujo de interacción de la aplicación se basa en la arquitectura: **UI / Eventos de Usuario ➔ Componentes ➔ Servicios del Sistema**.
+
+Puedes consultar la representación interactiva de la arquitectura generada por **Archify** en el siguiente enlace:
+
+🔗 **[Ver Diagrama Interactivo de Arquitectura en GitHub Pages](https://tu-usuario.github.io/tu-repositorio/architecture-diagram.html)**
+
+> *(Nota: Reemplaza la URL anterior por el enlace público correspondiente a tu repositorio en GitHub Pages).*
+
+---
+
+## 📸 Evidencias
+
+A continuación se presentan las capturas de pantalla del comportamiento de la aplicación en sus distintos estados:
+
+### 1. Contador con Valor Negativo
+*Representación visual cuando el contador disminuye por debajo de cero (cambio condicional de estilo/color).*
+
+<!-- Agrega tu imagen aquí cambiando el path -->
+![Contador Negativo](../images/IMG3.jpeg)
+
+---
+
+### 2. Contador en Cero
+*Estado inicial de la aplicación al reiniciar o al iniciar por primera vez.*
+
+![Contador en Cero](../images/IMG1.jpeg)
+
+---
+
+### 3. Contador con Valor Positivo
+*Comportamiento de la interfaz al incrementar el valor del contador.*
+
+![Contador Positivo](../images/IMG2.jpeg)
+
+---
 ## 💻 Comandos Clave Utilizados
 
 ```cmd
@@ -47,28 +102,6 @@ npm install -g @openai/codex
 :: Vinculación con cuenta de ChatGPT
 codex login
 
-:: Generación de diagrama interactivo
+:: Generación de diagrama interactivo de la carpeta lib/
 codex "Use Archify to create an interactive architecture diagram of this Flutter application based on its lib/ folder structure. Output as interactive HTML."
 ```
-
----
-
-## 📸 Evidencias del Proyecto
-
-### Aplicación de Flutter: Contador Inteligente
-A continuación se muestran los diferentes estados de la interfaz gráfica de la aplicación (`Counter Functions Mati`) según las interacciones del usuario:
-
-<p align="center">
-  <img src="../images/Contador_positivo_verde.png" alt="Contador Positivo +1" width="280" style="margin: 10px;">
-  <img src="../images/Contador_0_Azul.png" alt="Contador Cero" width="280" style="margin: 10px;">
-  <img src="../images/Contador_Negativo_Rojo.png" alt="Contador Negativo -1" width="280" style="margin: 10px;">
-</p>
-
----
-
-## 🌐 Despliegue y Arquitectura (GitHub Pages)
-
-El diagrama de arquitectura interactivo generado por **Archify** ha sido desplegado exitosamente utilizando **GitHub Pages** para su consulta web e inspección dinámica de los componentes.
-
-### Vista del Sitio Desplegado:
-![GitPages](../images/GITpages.png)
