@@ -104,10 +104,11 @@ Puedes revisar la estructura interactiva y mapeo de flujo de la aplicación gene
 
 *NO*
 
-![No](../images/no.jpeg)
+![No](../Images/no.jpeg)
 ### 3. Respuesta Alternativa ("Tal vez") y Fallback
 *Respuesta condicional textual ($20\%$ de probabilidad) y comportamiento ante fallos de red.*
-![talvez](../images/talvez.jpeg)
+
+![talvez](../Images/talvez.jpeg)
 ---
 
 ## 🛠️ Instalación y Ejecución
