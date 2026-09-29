@@ -100,7 +100,7 @@ Puedes revisar la estructura interactiva y mapeo de flujo de la aplicación gene
 *Detección de signo `?`, consulta a la API REST de `yesno.wtf` y renderizado de respuesta con GIF animado.*
 *SI*
 
-![Si](../images/SI.jpeg)
+![Si](../Images/SI.jpeg)
 
 *NO*
 
