@@ -87,7 +87,7 @@ lib/
 
 Puedes revisar la estructura interactiva y mapeo de flujo de la aplicación generada con **Archify** en el siguiente enlace:
 
-🔗 [**Ver Diagrama Interactivo de Arquitectura en GitHub Pages**](https://tu-usuario.github.io/tu-repositorio/architecture-diagram.html)
+🔗 [**Ver Diagrama Interactivo de Arquitectura en GitHub Pages**](https://EMATIAS230045.github.io/Practicas_DMI_230045/Practica03/yes_no_app/architecture-diagram.html)
 
 ---
 
