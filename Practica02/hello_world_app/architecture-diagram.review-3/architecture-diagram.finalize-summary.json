@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "C:\\Users\\matias\\Desktop\\Flutter2\\Practicas_DMI_230045\\Practica02\\hello_world_app\\.archify\\architecture-flutter-app-20260928-183000\\candidate.json",
+    "sha256": "25ca31c93abbed7e9fccdf068c53dd44da674edaba81de8b05467585bb7e5812",
+    "bytes": 39161
+  },
+  "artifact": {
+    "path": "C:\\Users\\matias\\Desktop\\Flutter2\\Practicas_DMI_230045\\Practica02\\hello_world_app\\architecture-diagram.html",
+    "sha256": "e1b0fee08f9f5cde883a300b81825d8b89d044b7439f32b7f06daed04c988b9b",
+    "bytes": 783946
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "C:\\Users\\matias\\Desktop\\Flutter2\\Practicas_DMI_230045\\Practica02\\hello_world_app\\architecture-diagram.review-3\\architecture-diagram.finalize.json",
+    "summaryReceipt": "C:\\Users\\matias\\Desktop\\Flutter2\\Practicas_DMI_230045\\Practica02\\hello_world_app\\architecture-diagram.review-3\\architecture-diagram.finalize-summary.json",
+    "browserCheckReceipt": "C:\\Users\\matias\\Desktop\\Flutter2\\Practicas_DMI_230045\\Practica02\\hello_world_app\\architecture-diagram.review-3\\architecture-diagram.browser-check.json"
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "timeout"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 28266,
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "resolvedCrossovers": 3,
+      "routesOverSuggestedBends": 5,
+      "routesOverSuggestedStretch": 3
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [
+        {
+          "left": {
+            "from": "functions",
+            "to": "ios",
+            "label": "Dart compartido",
+            "collectionIndex": 8,
+            "artifactIndex": 9
+          },
+          "right": {
+            "from": "functions",
+            "to": "web",
+            "label": "Dart compartido",
+            "collectionIndex": 9,
+            "artifactIndex": 10
+          },
+          "point": [
+            478.3000000000001,
+            864
+          ],
+          "sharedNode": "functions"
+        },
+        {
+          "left": {
+            "from": "functions",
+            "to": "web",
+            "label": "Dart compartido",
+            "collectionIndex": 9,
+            "artifactIndex": 10
+          },
+          "right": {
+            "from": "functions",
+            "to": "macos",
+            "label": "Dart compartido",
+            "collectionIndex": 11,
+            "artifactIndex": 12
+          },
+          "point": [
+            541.5,
+            864
+          ],
+          "sharedNode": "functions"
+        },
+        {
+          "left": {
+            "from": "functions",
+            "to": "web",
+            "label": "Dart compartido",
+            "collectionIndex": 9,
+            "artifactIndex": 10
+          },
+          "right": {
+            "from": "functions",
+            "to": "linux",
+            "label": "Dart compartido",
+            "collectionIndex": 12,
+            "artifactIndex": 13
+          },
+          "point": [
+            533.5,
+            864
+          ],
+          "sharedNode": "functions"
+        }
+      ],
+      "detours": [
+        {
+          "relationship": {
+            "from": "functions",
+            "to": "ios",
+            "label": "Dart compartido",
+            "collectionIndex": 8,
+            "artifactIndex": 9
+          },
+          "bends": 4,
+          "stretch": 1.401
+        },
+        {
+          "relationship": {
+            "from": "functions",
+            "to": "web",
+            "label": "Dart compartido",
+            "collectionIndex": 9,
+            "artifactIndex": 10
+          },
+          "bends": 5,
+          "stretch": 1.163
+        },
+        {
+          "relationship": {
+            "from": "functions",
+            "to": "windows",
+            "label": "Dart compartido",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "bends": 3,
+          "stretch": 1.63
+        },
+        {
+          "relationship": {
+            "from": "functions",
+            "to": "macos",
+            "label": "Dart compartido",
+            "collectionIndex": 11,
+            "artifactIndex": 12
+          },
+          "bends": 4,
+          "stretch": 1.559
+        },
+        {
+          "relationship": {
+            "from": "functions",
+            "to": "linux",
+            "label": "Dart compartido",
+            "collectionIndex": 12,
+            "artifactIndex": 13
+          },
+          "bends": 4,
+          "stretch": 1
+        }
+      ],
+      "truncated": false
+    },
+    "hints": [
+      "functions → ios and functions → web cross next to functions: move node ios or web so the two reach functions from different sides (for example one level with it, one directly above or below it).",
+      "functions → web and functions → macos cross next to functions: move node web or macos so the two reach functions from different sides (for example one level with it, one directly above or below it).",
+      "functions → web and functions → linux cross next to functions: move node web or linux so the two reach functions from different sides (for example one level with it, one directly above or below it).",
+      "functions → ios needs 4 bends: move node functions or ios so they share a row or column with matching centers, or sit diagonally with a clear corner.",
+      "functions → web needs 5 bends: move node functions or web so they share a row or column with matching centers, or sit diagonally with a clear corner.",
+      "functions → windows needs 3 bends: move node functions or windows so they share a row or column with matching centers, or sit diagonally with a clear corner.",
+      "functions → macos needs 4 bends: move node functions or macos so they share a row or column with matching centers, or sit diagonally with a clear corner.",
+      "functions → linux needs 4 bends: move node functions or linux so they share a row or column with matching centers, or sit diagonally with a clear corner."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}
