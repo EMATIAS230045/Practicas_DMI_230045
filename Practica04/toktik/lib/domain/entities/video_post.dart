@@ -1,5 +1,3 @@
-
-
 class VideoPost {
 
   final String caption;
