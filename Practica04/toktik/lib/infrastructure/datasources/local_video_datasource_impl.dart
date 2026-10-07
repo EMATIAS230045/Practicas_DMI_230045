@@ -6,21 +6,28 @@ import 'package:toktik/shared/data/local_video_posts.dart';
 class LocalVideoDatasource implements VideoPostDatasource {
 
   @override
-  Future<List<VideoPost>> getFavoriteVideosByUser(String userID) {
-    throw UnimplementedError();
+  Future<List<VideoPost>> getTrendingVideosByPage(int page) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    return videoPosts
+        .map((v) => LocalVideoModel.fromJson(v).toVideoPostEntity())
+        .toList();
   }
 
   @override
-  Future<List<VideoPost>> getTrendingVideosByPage(int page) async {
-    
-    await Future.delayed( const Duration(seconds: 2) );
-
-     final List<VideoPost> newVideos = videoPosts.map( 
-      ( video ) => LocalVideoModel.fromJson(video).toVideoPostEntity()
-    ).toList();
-
-    return newVideos;
+  Future<List<VideoPost>> getForYouVideosByPage(int page) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    // Devuelve los videos en orden invertido para simular contenido distinto
+    return videoPosts.reversed
+        .map((v) => LocalVideoModel.fromJson(v).toVideoPostEntity())
+        .toList();
   }
 
+  @override
+  Future<List<VideoPost>> getFavoriteVideosByUser(String userID) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    // Devuelve solo una muestra de los videos favoritos
+    return videoPosts.take(2)
+        .map((v) => LocalVideoModel.fromJson(v).toVideoPostEntity())
+        .toList();
+  }
 }
-
