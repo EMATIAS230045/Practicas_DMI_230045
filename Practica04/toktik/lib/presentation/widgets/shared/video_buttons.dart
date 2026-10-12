@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toktik/config/helpers/human_formats.dart';
 import 'package:toktik/domain/entities/video_post.dart';
+import 'package:toktik/presentation/providers/feed_provider.dart';
 import 'package:toktik/presentation/providers/theme_provider.dart';
 
 class VideoButtons extends StatelessWidget {
@@ -20,14 +21,20 @@ class VideoButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final seasonTheme = context.watch<ThemeProvider>().currentTheme;
+    final feedProvider = context.watch<FeedProvider>();
+
+    // Estado en tiempo real derivado de LocalStorage / FeedProvider
+    final isLiked = feedProvider.isVideoLiked(video.videoUrl);
+    final likesCount = feedProvider.getVideoLikes(video.videoUrl, video.likes);
 
     return Column(
       children: [
-        // Likes
+        // Botón de Like con toggle interactivo y tema dinámico
         _CustomIconButton(
-          value: video.likes,
-          iconData: seasonTheme.likeIcon,
-          iconColor: seasonTheme.accentColor,
+          value: likesCount,
+          iconData: isLiked ? seasonTheme.likeIcon : Icons.favorite_border,
+          iconColor: isLiked ? seasonTheme.accentColor : Colors.white,
+          onPressed: () => feedProvider.toggleLike(video),
         ),
         const SizedBox(height: 15),
 
@@ -39,7 +46,7 @@ class VideoButtons extends StatelessWidget {
         ),
         const SizedBox(height: 15),
 
-        // Botón Mute / Unmute
+        // Mute / Unmute
         IconButton(
           onPressed: onMuteToggle,
           icon: Icon(
@@ -69,11 +76,13 @@ class _CustomIconButton extends StatelessWidget {
   final int value;
   final IconData iconData;
   final Color? color;
+  final VoidCallback? onPressed;
 
   const _CustomIconButton({
     required this.value, 
     required this.iconData, 
     Color? iconColor,
+    this.onPressed,
   }) : color = iconColor ?? Colors.white;
 
   @override
@@ -81,7 +90,7 @@ class _CustomIconButton extends StatelessWidget {
     return Column(
       children: [
         IconButton(
-          onPressed: () {}, 
+          onPressed: onPressed ?? () {}, 
           icon: Icon(
             iconData,
             color: color,

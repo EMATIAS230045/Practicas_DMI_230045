@@ -127,19 +127,78 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
   }
 }
 
-class _VideoCaption extends StatelessWidget {
+class _VideoCaption extends StatefulWidget {
   final String caption;
 
   const _VideoCaption({required this.caption});
 
   @override
+  State<_VideoCaption> createState() => _VideoCaptionState();
+}
+
+class _VideoCaptionState extends State<_VideoCaption> {
+  bool isExpanded = false;
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final titleStyle = Theme.of(context).textTheme.titleLarge;
+    final captionStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(
+          color: Colors.white,
+          fontSize: 15,
+          height: 1.3,
+        );
+
+    // Condición para determinar si el texto requiere la opción "... más"
+    final bool isLongText = widget.caption.length > 50;
 
     return SizedBox(
-      width: size.width * 0.6,
-      child: Text(caption, maxLines: 2, style: titleStyle),
+      width: size.width * 0.65,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Contenedor de la descripción con desplazamiento vertical al expandir
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: isExpanded ? size.height * 0.30 : 50,
+            ),
+            child: SingleChildScrollView(
+              physics: isExpanded
+                  ? const BouncingScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
+              child: Text(
+                widget.caption,
+                maxLines: isExpanded ? null : 2,
+                overflow: isExpanded
+                    ? TextOverflow.visible
+                    : TextOverflow.ellipsis,
+                style: captionStyle,
+              ),
+            ),
+          ),
+
+          // Botón toggle "... más" / "Menos"
+          if (isLongText)
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isExpanded = !isExpanded;
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Text(
+                  isExpanded ? 'menos' : '... más',
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
