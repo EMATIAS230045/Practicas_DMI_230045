@@ -36,5 +36,6 @@ A continuación se detalla el progreso y el estado de las actividades desarrolla
 - **Framework:** [Flutter](https://flutter.dev/)
 - **Lenguaje de Programación:** [Dart](https://dart.dev/)
 - **Control de Versiones:** [Git](https://git-scm.com/) / [GitHub](https://github.com/)
+- **Manual de Instalacion:** [Manual](https://github.com/EMATIAS230045/Practicas_DMI_230045/blob/main/Manual_de_Instalaci%C3%B3n/Manual-dimatrek.pdf)
 
 ---
