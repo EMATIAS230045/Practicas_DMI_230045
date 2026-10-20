@@ -1,3 +1,5 @@
+// lib/presentation/providers/feed_provider.dart
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toktik/domain/entities/video_post.dart';
@@ -7,7 +9,7 @@ class FeedProvider extends ChangeNotifier {
   final VideoPostRepository videosRepository;
 
   int activeTabIndex = 1;
-  
+
   bool isDiscoverLoading = true;
   bool isForYouLoading = true;
   bool isFavoritesLoading = true;
@@ -16,9 +18,10 @@ class FeedProvider extends ChangeNotifier {
   List<VideoPost> forYouVideos = [];
   List<VideoPost> favoriteVideos = [];
 
-  // Mapeos en memoria para el estado de Likes
+  // Mapeos en memoria para el estado de Likes y Favoritos
   final Map<String, bool> _likedStatus = {};
   final Map<String, int> _likesCount = {};
+  final Map<String, bool> _favoritedStatus = {};
 
   FeedProvider({required this.videosRepository});
 
@@ -27,6 +30,9 @@ class FeedProvider extends ChangeNotifier {
 
   int getVideoLikes(String videoUrl, int initialLikes) =>
       _likesCount[videoUrl] ?? initialLikes;
+
+  bool isVideoFavorite(String videoUrl) =>
+      _favoritedStatus[videoUrl] ?? false;
 
   Future<void> loadInitialFeeds() async {
     await Future.wait([
@@ -37,7 +43,7 @@ class FeedProvider extends ChangeNotifier {
   }
 
   // Sincroniza los valores guardados en SharedPreferences con la lista cargada
-  Future<void> _syncVideoLikes(List<VideoPost> posts) async {
+  Future<void> _syncVideoData(List<VideoPost> posts) async {
     final prefs = await SharedPreferences.getInstance();
     for (var video in posts) {
       final url = video.videoUrl;
@@ -46,6 +52,15 @@ class FeedProvider extends ChangeNotifier {
       }
       if (!_likesCount.containsKey(url)) {
         _likesCount[url] = prefs.getInt('likes_count_$url') ?? video.likes;
+      }
+      if (!_favoritedStatus.containsKey(url)) {
+        final isFav = prefs.getBool('is_favorite_$url') ?? false;
+        _favoritedStatus[url] = isFav;
+
+        // Si el video fue guardado previamente, aseguramos que esté en favoriteVideos
+        if (isFav && !favoriteVideos.any((item) => item.videoUrl == url)) {
+          favoriteVideos.add(video);
+        }
       }
     }
   }
@@ -59,23 +74,43 @@ class FeedProvider extends ChangeNotifier {
     final newLikedState = !currentlyLiked;
     final newLikesCount = newLikedState ? currentLikes + 1 : currentLikes - 1;
 
-    // Actualizamos el estado en memoria
     _likedStatus[url] = newLikedState;
     _likesCount[url] = newLikesCount;
 
     notifyListeners();
 
-    // Guardamos los cambios en SharedPreferences
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('is_liked_$url', newLikedState);
     await prefs.setInt('likes_count_$url', newLikesCount);
+  }
+
+  // Alterna el estado de Favorito/Guardado y actualiza la lista favoriteVideos
+  Future<void> toggleFavorite(VideoPost video) async {
+    final url = video.videoUrl;
+    final currentlyFavorite = isVideoFavorite(url);
+    final newFavoriteState = !currentlyFavorite;
+
+    _favoritedStatus[url] = newFavoriteState;
+
+    if (newFavoriteState) {
+      if (!favoriteVideos.any((item) => item.videoUrl == url)) {
+        favoriteVideos.add(video);
+      }
+    } else {
+      favoriteVideos.removeWhere((item) => item.videoUrl == url);
+    }
+
+    notifyListeners();
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('is_favorite_$url', newFavoriteState);
   }
 
   Future<void> loadDiscover() async {
     isDiscoverLoading = true;
     notifyListeners();
     discoverVideos = await videosRepository.getTrendingVideosByPage(1);
-    await _syncVideoLikes(discoverVideos);
+    await _syncVideoData(discoverVideos);
     isDiscoverLoading = false;
     notifyListeners();
   }
@@ -84,7 +119,7 @@ class FeedProvider extends ChangeNotifier {
     isForYouLoading = true;
     notifyListeners();
     forYouVideos = await videosRepository.getForYouVideosByPage(1);
-    await _syncVideoLikes(forYouVideos);
+    await _syncVideoData(forYouVideos);
     isForYouLoading = false;
     notifyListeners();
   }
@@ -93,7 +128,7 @@ class FeedProvider extends ChangeNotifier {
     isFavoritesLoading = true;
     notifyListeners();
     favoriteVideos = await videosRepository.getFavoriteVideosByUser('user_1');
-    await _syncVideoLikes(favoriteVideos);
+    await _syncVideoData(favoriteVideos);
     isFavoritesLoading = false;
     notifyListeners();
   }

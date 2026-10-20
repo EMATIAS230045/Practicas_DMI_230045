@@ -1,3 +1,5 @@
+// lib/presentation/widgets/shared/video_buttons.dart
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,10 +28,11 @@ class VideoButtons extends StatelessWidget {
     // Estado en tiempo real derivado de LocalStorage / FeedProvider
     final isLiked = feedProvider.isVideoLiked(video.videoUrl);
     final likesCount = feedProvider.getVideoLikes(video.videoUrl, video.likes);
+    final isFavorite = feedProvider.isVideoFavorite(video.videoUrl);
 
     return Column(
       children: [
-        // Botón de Like con toggle interactivo y tema dinámico
+        // 1. Botón de Like con toggle interactivo y tema dinámico
         _CustomIconButton(
           value: likesCount,
           iconData: isLiked ? seasonTheme.likeIcon : Icons.favorite_border,
@@ -38,7 +41,16 @@ class VideoButtons extends StatelessWidget {
         ),
         const SizedBox(height: 15),
 
-        // Vistas
+        // 2. Botón de Favorito / Guardado
+        _CustomIconButton(
+          value: isFavorite ? 1 : 0,
+          iconData: isFavorite ? Icons.bookmark : Icons.bookmark_border,
+          iconColor: isFavorite ? Colors.amber : Colors.white,
+          onPressed: () => feedProvider.toggleFavorite(video),
+        ),
+        const SizedBox(height: 15),
+
+        // 3. Vistas
         _CustomIconButton(
           value: video.views,
           iconData: seasonTheme.viewsIcon,
@@ -46,7 +58,7 @@ class VideoButtons extends StatelessWidget {
         ),
         const SizedBox(height: 15),
 
-        // Mute / Unmute
+        // 4. Mute / Unmute
         IconButton(
           onPressed: onMuteToggle,
           icon: Icon(
@@ -57,7 +69,7 @@ class VideoButtons extends StatelessWidget {
         ),
         const SizedBox(height: 15),
 
-        // Disco giratorio
+        // 5. Disco giratorio
         SpinPerfect(
           infinite: true,
           duration: const Duration(seconds: 5),

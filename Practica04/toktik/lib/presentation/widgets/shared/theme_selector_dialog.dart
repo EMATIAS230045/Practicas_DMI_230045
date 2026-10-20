@@ -1,3 +1,5 @@
+// lib/presentation/widgets/shared/theme_selector_dialog.dart
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toktik/config/theme/app_season_theme.dart';
@@ -9,39 +11,113 @@ class ThemeSelectorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
+    final isAutomatic = themeProvider.selectedMode == ThemeModeOption.automatic;
+    final isCustomDate = themeProvider.selectedMode == ThemeModeOption.customDate;
 
     return AlertDialog(
       title: const Text('Probar Temporada (Modo Pruebas)'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            title: const Text('Modo Automático (Fecha Actual)'),
-            leading: Radio<AppSeason?>(
-              value: null,
-              groupValue: themeProvider.overrideSeason,
-              onChanged: (value) {
-                themeProvider.setSeasonTheme(null);
-                Navigator.pop(context);
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 1. Modo Automático (Fecha Real del dispositivo)
+            ListTile(
+              title: const Text('Modo Automático (Fecha Actual)'),
+              subtitle: Text(
+                'Hoy: ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+              leading: Icon(
+                isAutomatic ? Icons.radio_button_checked : Icons.radio_button_off,
+                color: isAutomatic ? Theme.of(context).primaryColor : Colors.grey,
+              ),
+              onTap: () async {
+                await themeProvider.setAutomaticMode();
+                if (context.mounted) Navigator.pop(context);
               },
             ),
-          ),
-          const Divider(),
-          ...AppSeason.values.map((season) {
-            final seasonData = SeasonThemeData.fromSeason(season);
-            return ListTile(
-              title: Text(seasonData.name),
-              leading: Radio<AppSeason?>(
-                value: season,
-                groupValue: themeProvider.overrideSeason,
-                onChanged: (value) {
-                  themeProvider.setSeasonTheme(season);
-                  Navigator.pop(context);
-                },
+
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Text(
+                'El icono de inicio se actualiza al cerrar la app desde recientes.',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
               ),
-            );
-          }),
-        ],
+            ),
+
+            const Divider(),
+
+            // 2. Simular por Fecha (DatePicker / Calendario)
+            ListTile(
+              title: const Text('Simular por Fecha 📅'),
+              subtitle: Text(
+                isCustomDate && themeProvider.customDate != null
+                    ? 'Seleccionada: ${themeProvider.customDate!.day}/${themeProvider.customDate!.month}/${themeProvider.customDate!.year}'
+                    : 'Elegir día en el calendario',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isCustomDate ? Colors.amber : Colors.grey,
+                ),
+              ),
+              leading: Icon(
+                Icons.calendar_month_rounded,
+                color: isCustomDate ? Colors.amber : Colors.grey,
+              ),
+              onTap: () async {
+                final pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: themeProvider.customDate ?? DateTime.now(),
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2030),
+                  builder: (context, child) {
+                    return Theme(
+                      data: ThemeData.dark(),
+                      child: child!,
+                    );
+                  },
+                );
+                if (pickedDate != null) {
+                  themeProvider.setCustomDate(pickedDate);
+                  if (context.mounted) Navigator.pop(context);
+                }
+              },
+            ),
+
+            const Divider(),
+
+            const Padding(
+              padding: EdgeInsets.only(left: 16, top: 8, bottom: 4),
+              child: Text(
+                'Forzar Temporada Directa:',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+
+            // 3. Mapeo dinámico de temporadas manuales
+            ...AppSeason.values.map((season) {
+              final seasonData = SeasonThemeData.fromSeason(season);
+              final isSelected = themeProvider.selectedMode == ThemeModeOption.manual &&
+                  themeProvider.overrideSeason == season;
+
+              return ListTile(
+                title: Text(seasonData.name),
+                leading: Icon(
+                  isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
+                  color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
+                ),
+                onTap: () async {
+                  await themeProvider.setSeasonTheme(season);
+                  if (context.mounted) Navigator.pop(context);
+                },
+              );
+            }),
+          ],
+        ),
       ),
     );
   }

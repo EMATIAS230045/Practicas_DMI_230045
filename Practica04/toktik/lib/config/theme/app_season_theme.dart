@@ -1,3 +1,5 @@
+// lib/config/theme/app_season_theme.dart
+
 import 'package:flutter/material.dart';
 
 enum AppSeason { normal, halloween, christmas, valentines }
@@ -10,6 +12,7 @@ class SeasonThemeData {
   final IconData viewsIcon;
   final Color accentColor;
   final String audioAsset;
+  final String logoAsset; // Campo para la ruta del logo dinámico
 
   SeasonThemeData({
     required this.season,
@@ -19,6 +22,7 @@ class SeasonThemeData {
     required this.viewsIcon,
     required this.accentColor,
     required this.audioAsset,
+    required this.logoAsset,
   });
 
   factory SeasonThemeData.fromSeason(AppSeason season) {
@@ -31,6 +35,7 @@ class SeasonThemeData {
           likeIcon: Icons.sentiment_very_dissatisfied, // Naranja / Calabaza / Calavera
           viewsIcon: Icons.remove_red_eye_sharp,
           audioAsset: 'assets/audio/halloween_theme.mp3',
+          logoAsset: 'assets/images/hallowen_toktikv2-removebg-preview.png',
           themeData: ThemeData.dark().copyWith(
             scaffoldBackgroundColor: const Color(0xFF120E16),
             colorScheme: const ColorScheme.dark(
@@ -51,6 +56,7 @@ class SeasonThemeData {
           likeIcon: Icons.card_giftcard,
           viewsIcon: Icons.ac_unit,
           audioAsset: 'assets/audio/christmas_theme.mp3',
+          logoAsset: 'assets/images/navidad_toktikv2-removebg-preview.png',
           themeData: ThemeData.dark().copyWith(
             scaffoldBackgroundColor: const Color(0xFF0F1A15),
             colorScheme: const ColorScheme.dark(
@@ -71,6 +77,7 @@ class SeasonThemeData {
           likeIcon: Icons.favorite,
           viewsIcon: Icons.auto_awesome,
           audioAsset: 'assets/audio/valentines_theme.mp3',
+          logoAsset: 'assets/images/san_valentintoktikv2-removebg-preview.png',
           themeData: ThemeData.dark().copyWith(
             scaffoldBackgroundColor: const Color(0xFF1C0D18),
             colorScheme: const ColorScheme.dark(
@@ -92,6 +99,7 @@ class SeasonThemeData {
           likeIcon: Icons.favorite,
           viewsIcon: Icons.remove_red_eye,
           audioAsset: 'assets/audio/normal_theme.mp3',
+          logoAsset: 'assets/images/normalv2-removebg-preview.png',
           themeData: ThemeData.dark().copyWith(
             scaffoldBackgroundColor: Colors.black,
             colorScheme: const ColorScheme.dark(

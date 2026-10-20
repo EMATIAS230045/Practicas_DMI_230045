@@ -1,3 +1,5 @@
+// lib/presentation/widgets/video/fullscreen_player.dart
+
 import 'package:flutter/material.dart';
 import 'package:toktik/domain/entities/video_post.dart';
 import 'package:toktik/presentation/widgets/shared/video_buttons.dart';
@@ -25,12 +27,27 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
   void initState() {
     super.initState();
 
-    controller = VideoPlayerController.asset(widget.video.videoUrl)
-      ..setVolume(isMuted ? 0.0 : 1.0)
-      ..setLooping(true)
-      ..play();
+    final isNetworkVideo = widget.video.videoUrl.startsWith('http');
 
-    _initializeVideoPlayerFuture = controller.initialize();
+    if (isNetworkVideo) {
+      controller = VideoPlayerController.networkUrl(
+        Uri.parse(widget.video.videoUrl),
+        httpHeaders: const {
+          'User-Agent':
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Referer': 'https://www.youtube.com/',
+        },
+      );
+    } else {
+      controller = VideoPlayerController.asset(widget.video.videoUrl);
+    }
+
+    _initializeVideoPlayerFuture = controller.initialize().then((_) {
+      controller.setVolume(isMuted ? 0.0 : 1.0);
+      controller.setLooping(true);
+      controller.play();
+      setState(() {});
+    });
   }
 
   @override
@@ -63,16 +80,28 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const Center(
-            child: CircularProgressIndicator(strokeWidth: 2),
+            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
           );
         }
 
         if (snapshot.hasError) {
           return Center(
-            child: Text(
-              'Error al cargar el video:\n${snapshot.error}',
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.video_library_outlined,
+                    size: 60, color: Colors.white54),
+                const SizedBox(height: 10),
+                const Text(
+                  'Este video no está disponible',
+                  style: TextStyle(color: Colors.white70, fontSize: 16),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Desliza para ver el siguiente',
+                  style: TextStyle(color: Colors.white38, fontSize: 12),
+                ),
+              ],
             ),
           );
         }
@@ -83,15 +112,12 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
             aspectRatio: controller.value.aspectRatio,
             child: Stack(
               children: [
-                // Reproductor de Video
                 VideoPlayer(controller),
 
-                // Gradiente inferior
                 VideoBackground(
                   stops: const [0.8, 1.0],
                 ),
 
-                // Icono de Play gigante en el centro cuando está en PAUSA
                 if (!controller.value.isPlaying)
                   const Center(
                     child: Icon(
@@ -101,14 +127,12 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
                     ),
                   ),
 
-                // Descripción del Video (Inferior izquierda)
                 Positioned(
                   bottom: 50,
                   left: 20,
                   child: _VideoCaption(caption: widget.video.caption),
                 ),
 
-                // Botones de acción (Inferior derecha: Likes, Views, Mute, Disco)
                 Positioned(
                   bottom: 40,
                   right: 20,
@@ -127,77 +151,106 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
   }
 }
 
-class _VideoCaption extends StatefulWidget {
+class _VideoCaption extends StatelessWidget {
   final String caption;
 
   const _VideoCaption({required this.caption});
 
-  @override
-  State<_VideoCaption> createState() => _VideoCaptionState();
-}
-
-class _VideoCaptionState extends State<_VideoCaption> {
-  bool isExpanded = false;
+  void _showFullDescriptionModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.grey[900]?.withValues(alpha: 0.95),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.45,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 38,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 15),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[600],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const Text(
+                'Descripción del video',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Text(
+                    caption,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final captionStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(
-          color: Colors.white,
-          fontSize: 15,
-          height: 1.3,
-        );
-
-    // Condición para determinar si el texto requiere la opción "... más"
-    final bool isLongText = widget.caption.length > 50;
+    final bool isLongText = caption.length > 50;
 
     return SizedBox(
       width: size.width * 0.65,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Contenedor de la descripción con desplazamiento vertical al expandir
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: isExpanded ? size.height * 0.30 : 50,
-            ),
-            child: SingleChildScrollView(
-              physics: isExpanded
-                  ? const BouncingScrollPhysics()
-                  : const NeverScrollableScrollPhysics(),
-              child: Text(
-                widget.caption,
-                maxLines: isExpanded ? null : 2,
-                overflow: isExpanded
-                    ? TextOverflow.visible
-                    : TextOverflow.ellipsis,
-                style: captionStyle,
+      child: GestureDetector(
+        onTap: () => _showFullDescriptionModal(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              caption,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+                height: 1.3,
               ),
             ),
-          ),
-
-          // Botón toggle "... más" / "Menos"
-          if (isLongText)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  isExpanded = !isExpanded;
-                });
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(top: 4.0),
+            if (isLongText)
+              const Padding(
+                padding: EdgeInsets.only(top: 4.0),
                 child: Text(
-                  isExpanded ? 'menos' : '... más',
-                  style: const TextStyle(
+                  '... más',
+                  style: TextStyle(
                     color: Colors.white70,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

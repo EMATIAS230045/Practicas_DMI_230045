@@ -26,7 +26,7 @@ class LocalVideoDatasource implements VideoPostDatasource {
   Future<List<VideoPost>> getFavoriteVideosByUser(String userID) async {
     await Future.delayed(const Duration(milliseconds: 500));
     // Devuelve solo una muestra de los videos favoritos
-    return videoPosts.take(2)
+    return videoPosts.take(1)
         .map((v) => LocalVideoModel.fromJson(v).toVideoPostEntity())
         .toList();
   }
