@@ -42,6 +42,7 @@ dependencies:
   youtube_explode_dart: ^2.2.1
   dio: ^5.4.0
   flutter_dynamic_icon_plus: ^1.2.2
+  audioplayers: ^6.8.1
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +69,7 @@ flutter:
   assets:
     - assets/videos/
     - assets/images/
+    - assets/Audios/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

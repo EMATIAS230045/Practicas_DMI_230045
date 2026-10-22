@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toktik/config/services/app_task_service.dart';
 import 'package:toktik/config/theme/app_season_theme.dart';
 import 'package:toktik/presentation/providers/theme_provider.dart';
 
@@ -34,7 +35,7 @@ class ThemeSelectorDialog extends StatelessWidget {
               ),
               onTap: () async {
                 await themeProvider.setAutomaticMode();
-                if (context.mounted) Navigator.pop(context);
+                await AppTaskService.closeAndRemoveFromRecents();
               },
             ),
 
@@ -78,8 +79,8 @@ class ThemeSelectorDialog extends StatelessWidget {
                   },
                 );
                 if (pickedDate != null) {
-                  themeProvider.setCustomDate(pickedDate);
-                  if (context.mounted) Navigator.pop(context);
+                  await themeProvider.setCustomDate(pickedDate);
+                  await AppTaskService.closeAndRemoveFromRecents();
                 }
               },
             ),
@@ -112,7 +113,7 @@ class ThemeSelectorDialog extends StatelessWidget {
                 ),
                 onTap: () async {
                   await themeProvider.setSeasonTheme(season);
-                  if (context.mounted) Navigator.pop(context);
+                  await AppTaskService.closeAndRemoveFromRecents();
                 },
               );
             }),

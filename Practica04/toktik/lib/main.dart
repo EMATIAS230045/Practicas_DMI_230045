@@ -12,7 +12,7 @@ import 'package:toktik/infrastructure/datasources/tiktok_video_datasource_impl.d
 import 'package:toktik/infrastructure/repositories/video_posts_repository_impl.dart';
 import 'package:toktik/presentation/providers/feed_provider.dart';
 import 'package:toktik/presentation/providers/theme_provider.dart';
-import 'package:toktik/presentation/screens/home/main_feed_screen.dart';
+import 'package:toktik/presentation/screens/startup/seasonal_welcome_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
             title: 'TokTik',
             debugShowCheckedModeBanner: false,
             theme: themeProvider.currentTheme.themeData,
-            home: const MainFeedScreen(),
+            home: const SeasonalWelcomeScreen(),
           );
         },
       ),

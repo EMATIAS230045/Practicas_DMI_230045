@@ -34,7 +34,7 @@ class SeasonThemeData {
           accentColor: Colors.orangeAccent,
           likeIcon: Icons.sentiment_very_dissatisfied, // Naranja / Calabaza / Calavera
           viewsIcon: Icons.remove_red_eye_sharp,
-          audioAsset: 'assets/audio/halloween_theme.mp3',
+          audioAsset: 'Audios/Hallowen.m4a',
           logoAsset: 'assets/images/hallowen_toktikv2-removebg-preview.png',
           themeData: ThemeData.dark().copyWith(
             scaffoldBackgroundColor: const Color(0xFF120E16),
@@ -55,7 +55,7 @@ class SeasonThemeData {
           accentColor: Colors.redAccent,
           likeIcon: Icons.card_giftcard,
           viewsIcon: Icons.ac_unit,
-          audioAsset: 'assets/audio/christmas_theme.mp3',
+          audioAsset: 'Audios/navidad.m4a',
           logoAsset: 'assets/images/navidad_toktikv2-removebg-preview.png',
           themeData: ThemeData.dark().copyWith(
             scaffoldBackgroundColor: const Color(0xFF0F1A15),
@@ -76,7 +76,7 @@ class SeasonThemeData {
           accentColor: Colors.pinkAccent,
           likeIcon: Icons.favorite,
           viewsIcon: Icons.auto_awesome,
-          audioAsset: 'assets/audio/valentines_theme.mp3',
+          audioAsset: 'Audios/sanvalentin.m4a',
           logoAsset: 'assets/images/san_valentintoktikv2-removebg-preview.png',
           themeData: ThemeData.dark().copyWith(
             scaffoldBackgroundColor: const Color(0xFF1C0D18),
@@ -98,7 +98,7 @@ class SeasonThemeData {
           accentColor: Colors.red,
           likeIcon: Icons.favorite,
           viewsIcon: Icons.remove_red_eye,
-          audioAsset: 'assets/audio/normal_theme.mp3',
+          audioAsset: 'Audios/normal.m4a',
           logoAsset: 'assets/images/normalv2-removebg-preview.png',
           themeData: ThemeData.dark().copyWith(
             scaffoldBackgroundColor: Colors.black,

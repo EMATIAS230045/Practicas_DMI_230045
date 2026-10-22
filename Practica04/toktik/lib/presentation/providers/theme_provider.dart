@@ -14,10 +14,12 @@ class ThemeProvider extends ChangeNotifier {
   SeasonThemeData _currentTheme = SeasonThemeData.fromSeason(AppSeason.normal);
   AppSeason? _overrideSeason;
   DateTime? _customDate;
+  bool _isInitialized = false;
 
   SeasonThemeData get currentTheme => _currentTheme;
   AppSeason? get overrideSeason => _overrideSeason;
   DateTime? get customDate => _customDate;
+  bool get isInitialized => _isInitialized;
 
   ThemeModeOption get selectedMode {
     if (_overrideSeason != null) return ThemeModeOption.manual;
@@ -75,6 +77,7 @@ class ThemeProvider extends ChangeNotifier {
     } else {
       await _updateThemeByRealDate();
     }
+    _isInitialized = true;
     notifyListeners();
   }
 
