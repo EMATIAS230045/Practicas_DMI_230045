@@ -13,7 +13,6 @@ class TikTokVideoDatasourceImpl implements VideoPostDatasource {
   // Lista con tus 6 enlaces reales de TikTok
   static const List<String> targetTikTokUrls = [
     'https://www.tiktok.com/@hunainn/video/7697656998690835732',
-    'https://www.tiktok.com/@aldri_fm/video/7666967711750098197',
     'https://www.tiktok.com/@meowtakeover/video/7691423726994328840',
     'https://www.tiktok.com/@jeishua9/video/7694106707756059924',
     'https://www.tiktok.com/@comprameunamaruchan1/video/7684836233675050258',

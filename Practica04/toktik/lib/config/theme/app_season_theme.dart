@@ -24,7 +24,7 @@ class SeasonThemeData {
     required this.audioAsset,
     required this.logoAsset,
   });
-
+ //Aqui se estaran mostrando las configuraciones sobre como se veran los estilos de la aplicacion
   factory SeasonThemeData.fromSeason(AppSeason season) {
     switch (season) {
       case AppSeason.halloween:
