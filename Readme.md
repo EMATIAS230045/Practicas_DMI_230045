@@ -28,7 +28,7 @@ A continuación se detalla el progreso y el estado de las actividades desarrolla
 | **1** | 📖 Metodología | Comprender la metodología y las fechas de evaluación de la asignatura. | — | 5 | ✅ Concluida |
 | **2** | **Práctica 02:** Mi primera aplicación móvil con Flutter | Aplicación de contador desarrollada con `StatefulWidget` y `StatelessWidget`. | [Ver Práctica 2](/Practica02/hello_world_app/) | 20 | ✅ Concluida |
 | **3** | **Práctica 03:** Yes No App | Chat en Flutter que responde *Sí*, *No* o *Tal vez* a preguntas y muestra un GIF. | [Ver Práctica 3](/Practica03/yes_no_app/) | 30 | ✅ Concluida |
-| **3** | **Práctica 04:** TOKTIK |Aplicacion que simula o intenta parecerse a tiktok imitando su comportamiento y configuraciones especiales. | [Ver Práctica 3](/Practica04/toktik/) | 30 | ✅ Concluida |
+| **4** | **Práctica 04:** TOKTIK |Aplicacion que simula o intenta parecerse a tiktok imitando su comportamiento y configuraciones especiales. | [Ver Práctica 3](/Practica04/toktik/) | 30 | ✅ Concluida |
 
 ---
 
