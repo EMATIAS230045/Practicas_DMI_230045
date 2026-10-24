@@ -58,4 +58,5 @@ Para no perder nunca ese video que te encantó:
 
 ## 🛠️ Arquitectura y Datos
 Para entender mejor cómo se conectan los microservicios, bases de datos y la interfaz de Tok Tik, por favor consulta el archivo interactivo adjunto en este repositorio:
-🔗 [**Ver Diagrama Interactivo de Arquitectura en GitHub Pages**](https://EMATIAS230045.github.io/Practicas_DMI_230045/Practica04/toktik/DiagramaDeSketchesLumen.html)
+🔗 [**Ver Diagrama Interactivo de Arquitectura en GitHub Pages**](https://EMATIAS230045.github.io/Practicas_DMI_230045.archify
+/architecture-toktik-data-sources-20261023-112609/toktik-data-sources.html)
