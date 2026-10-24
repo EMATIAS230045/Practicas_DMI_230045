@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\candidate.json",
+    "sha256": "161080a07fac3522fd668f441736f6855d909929230a9e9beac6bd72bb647866",
+    "bytes": 10470
+  },
+  "artifact": {
+    "path": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\toktik-data-sources.html",
+    "sha256": "825bf48828df0ec3d9d802e46e7da438f3358440e0983feedc2d3eacf8ccfb3b",
+    "bytes": 794615
+  },
+  "gates": {
+    "validate": "fail",
+    "deliver": "not-run",
+    "check": "not-run",
+    "browser-check": "not-run"
+  },
+  "failedStage": "validate",
+  "diagnostics": [
+    {
+      "code": "internal/unclassified",
+      "severity": "error",
+      "message": "Renderer failed before emitting a structured diagnostic.",
+      "subject": {},
+      "evidence": {
+        "exitCode": 1
+      }
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\review-2\\toktik-data-sources.finalize.json",
+    "summaryReceipt": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\review-2\\toktik-data-sources.finalize-summary.json"
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "timeout"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 12519,
+  "nextAction": {
+    "action": "edit-in-place",
+    "candidate": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\candidate.json",
+    "constraint": "Preserve all semantics and user-fixed geometry. Use references/architecture-layout-repair.md to choose a local repair or connected-scene reflow; edit the existing candidate.",
+    "then": "finalize-once"
+  }
+}

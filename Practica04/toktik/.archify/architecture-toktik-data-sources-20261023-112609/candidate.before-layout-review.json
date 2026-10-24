@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TokTik · Arquitectura de fuentes de datos",
+    "subtitle": "Vista interactiva: implementación actual y ruta objetivo de producción",
+    "output": ".archify/architecture-toktik-data-sources-20261023-112609/toktik-data-sources.html",
+    "quality_profile": "showcase",
+    "locale": "es",
+    "translations": {
+      "guide": "Guía", "search": "Buscar", "close": "Cerrar", "moreInfo": "Más información",
+      "local": "Local", "remote": "Remoto", "proposed": "Propuesto", "current": "Actual"
+    },
+    "repository": {
+      "url": "https://github.com/EMATIAS230045/Practicas_DMI_230045.git",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "d3d4442382e8e27e17c2e2b271dde0796d6c59e5"
+    },
+    "views": [
+      { "id": "local", "label": "1 · Data Source Local", "focus": ["feed-provider", "repository", "local-source", "video-assets", "prefs", "room-db", "media-cache"], "note": "Lectura offline, estado local y la evolución hacia persistencia duradera." },
+      { "id": "remote", "label": "2 · Data Source Remoto", "focus": ["feed-provider", "repository", "combined-source", "http-client", "api-gateway", "recommendations", "upload-processing", "social-api", "live-ws", "jwt-auth"], "note": "Agregación de APIs actuales y servicios objetivo para un backend de producción." }
+    ],
+    "legend": { "mode": "all", "entries": {
+      "frontend": { "label": "Aplicación Flutter" }, "backend": { "label": "Servicio / datasource" },
+      "database": { "label": "Almacenamiento" }, "cloud": { "label": "Red / media" },
+      "security": { "label": "Identidad y tokens" }, "external": { "label": "Proveedor externo" }
+    }}
+  },
+  "components": [
+    { "id": "feed-provider", "type": "frontend", "label": "FeedProvider", "sublabel": "Estado de feed y favoritos · ACTUAL", "tag": "UI", "pos": [42, 268], "size": [150, 68], "sources": [{ "path": "Practica04/toktik/lib/presentation/providers/feed_provider.dart", "line": 8, "end_line": 139, "label": "Carga y persiste estado" }] },
+    { "id": "repository", "type": "backend", "label": "VideoPostsRepository", "sublabel": "Contrato unificado VideoPost", "tag": "DOMINIO", "pos": [272, 268], "size": [158, 68], "sources": [{ "path": "Practica04/toktik/lib/domain/datasources/video_posts_datasource.dart", "line": 3, "end_line": 7, "label": "Contrato de datasource" }, { "path": "Practica04/toktik/lib/infrastructure/repositories/video_posts_repository_impl.dart", "line": 5, "end_line": 22, "label": "Delegación al datasource" }] },
+    { "id": "local-source", "type": "backend", "label": "LocalVideoDatasource", "sublabel": "Assets → LocalVideoModel → VideoPost", "tag": "LOCAL · ACTUAL", "pos": [562, 90], "size": [182, 72], "sources": [{ "path": "Practica04/toktik/lib/infrastructure/datasources/local_video_datasource_impl.dart", "line": 6, "end_line": 32, "label": "Lee catálogo local" }] },
+    { "id": "video-assets", "type": "database", "label": "Bundle de videos", "sublabel": "assets/videos/*.mp4 · offline", "tag": "LOCAL · ACTUAL", "pos": [812, 34], "size": [164, 68], "sources": [{ "path": "Practica04/toktik/pubspec.yaml", "line": 62, "end_line": 72, "label": "Assets registrados" }, { "path": "Practica04/toktik/lib/shared/data/local_video_posts.dart", "line": 1, "end_line": 60, "label": "Catálogo de URLs asset" }] },
+    { "id": "prefs", "type": "database", "label": "SharedPreferences", "sublabel": "likes, favoritos y contador local", "tag": "LOCAL · ACTUAL", "pos": [812, 154], "size": [164, 68], "sources": [{ "path": "Practica04/toktik/lib/presentation/providers/feed_provider.dart", "line": 45, "end_line": 106, "label": "Sincroniza preferencias" }] },
+    { "id": "room-db", "type": "database", "label": "SQLite / Room", "sublabel": "Posts, usuarios, cola de acciones", "tag": "LOCAL · OBJETIVO", "pos": [562, 760], "size": [182, 72] },
+    { "id": "media-cache", "type": "cloud", "label": "Caché de media", "sublabel": "MP4/HLS, thumbnails, TTL y LRU", "tag": "LOCAL · OBJETIVO", "pos": [812, 760], "size": [164, 68] },
+    { "id": "combined-source", "type": "backend", "label": "CombinedVideoDatasource", "sublabel": "Future.wait e intercalado de feeds", "tag": "REMOTO · ACTUAL", "pos": [562, 268], "size": [182, 72], "sources": [{ "path": "Practica04/toktik/lib/infrastructure/datasources/combined_video_datasource_impl.dart", "line": 6, "end_line": 55, "label": "Orquesta fuentes" }] },
+    { "id": "pixabay", "type": "external", "label": "Pixabay API", "sublabel": "GET /api/videos · page=…", "tag": "REMOTO · ACTUAL", "pos": [814, 260], "size": [162, 62], "sources": [{ "path": "Practica04/toktik/lib/infrastructure/datasources/pixabay_video_datasource_impl.dart", "line": 5, "end_line": 31, "label": "Consulta con Dio" }] },
+    { "id": "giphy", "type": "external", "label": "Giphy API", "sublabel": "GET /v1/gifs/trending", "tag": "REMOTO · ACTUAL", "pos": [814, 348], "size": [162, 62], "sources": [{ "path": "Practica04/toktik/lib/infrastructure/datasources/giphy_video_datasource_impl.dart", "line": 7, "end_line": 34, "label": "Filtra URL reproducible" }] },
+    { "id": "tiktok-adapter", "type": "external", "label": "TikTok adapter", "sublabel": "POST tikwm.com/api · timeout 5 s", "tag": "REMOTO · ACTUAL", "pos": [814, 526], "size": [162, 62], "sources": [{ "path": "Practica04/toktik/lib/infrastructure/datasources/tiktok_video_datasource_impl.dart", "line": 28, "end_line": 120, "label": "Resuelve y respalda video" }] },
+    { "id": "http-client", "type": "backend", "label": "Cliente HTTP + interceptores", "sublabel": "Bearer token, timeout, retry exponencial", "tag": "REMOTO · OBJETIVO", "pos": [562, 608], "size": [182, 72] },
+    { "id": "api-gateway", "type": "cloud", "label": "API Gateway", "sublabel": "HTTPS JSON · rate limit · observabilidad", "tag": "REMOTO · OBJETIVO", "pos": [870, 620], "size": [162, 68] },
+    { "id": "jwt-auth", "type": "security", "label": "Autenticación JWT", "sublabel": "POST /auth/* · access + refresh token", "tag": "REMOTO · OBJETIVO", "pos": [1145, 54], "size": [174, 68] },
+    { "id": "recommendations", "type": "backend", "label": "Feed de recomendaciones", "sublabel": "GET /v1/feed?cursor=…", "tag": "REMOTO · OBJETIVO", "pos": [1145, 176], "size": [174, 68] },
+    { "id": "upload-processing", "type": "cloud", "label": "Subida y procesamiento", "sublabel": "POST /videos · upload + transcodificación", "tag": "REMOTO · OBJETIVO", "pos": [1145, 298], "size": [174, 68] },
+    { "id": "social-api", "type": "backend", "label": "Likes y comentarios", "sublabel": "POST /likes · GET/POST /comments", "tag": "REMOTO · OBJETIVO", "pos": [1145, 420], "size": [174, 68] },
+    { "id": "live-ws", "type": "messagebus", "label": "WebSocket en vivos", "sublabel": "wss://…/live · eventos de chat", "tag": "REMOTO · OBJETIVO", "pos": [1145, 542], "size": [174, 68] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Dispositivo móvil · almacenamiento y reproducción offline", "wraps": ["feed-provider", "repository", "local-source", "video-assets", "prefs", "room-db", "media-cache"], "pad": 30 },
+    { "kind": "region", "label": "Red y servicios de contenido", "wraps": ["combined-source", "pixabay", "giphy", "tiktok-adapter", "http-client", "api-gateway", "jwt-auth", "recommendations", "upload-processing", "social-api", "live-ws"], "pad": 30 }
+  ],
+  "connections": [
+    { "from": "feed-provider", "to": "repository", "label": "carga feed / favoritos", "variant": "emphasis" },
+    { "from": "repository", "to": "local-source", "label": "Para ti · offline", "fromSide": "top", "toSide": "left" },
+    { "from": "local-source", "to": "video-assets", "label": "lee MP4 local" },
+    { "from": "feed-provider", "to": "prefs", "label": "guarda likes y favoritos", "fromSide": "right", "toSide": "left" },
+    { "from": "repository", "to": "combined-source", "label": "Descubrir · tendencias", "variant": "emphasis" },
+    { "from": "combined-source", "to": "pixabay", "label": "GET videos", "fromSide": "right", "toSide": "left" },
+    { "from": "combined-source", "to": "giphy", "label": "GET GIFs", "fromSide": "right", "toSide": "left" },
+    { "from": "combined-source", "to": "tiktok-adapter", "label": "resuelve URLs", "fromSide": "right", "toSide": "left" },
+    { "from": "feed-provider", "to": "room-db", "label": "propuesta: persistir feed", "variant": "dashed", "fromSide": "bottom", "toSide": "left" },
+    { "from": "room-db", "to": "media-cache", "label": "TTL", "variant": "dashed" },
+    { "from": "repository", "to": "http-client", "label": "propuesta: llamadas autenticadas", "variant": "dashed", "fromSide": "bottom", "toSide": "left" },
+    { "from": "http-client", "to": "api-gateway", "label": "HTTPS JSON + retry", "variant": "security" },
+    { "from": "api-gateway", "to": "jwt-auth", "label": "login / refresh", "variant": "security" },
+    { "from": "api-gateway", "to": "recommendations", "label": "feed paginado", "fromSide": "right", "toSide": "left" },
+    { "from": "api-gateway", "to": "upload-processing", "label": "subir y transcodificar", "fromSide": "right", "toSide": "left" },
+    { "from": "api-gateway", "to": "social-api", "label": "interacciones", "fromSide": "right", "toSide": "left" },
+    { "from": "api-gateway", "to": "live-ws", "label": "upgrade WSS", "fromSide": "right", "toSide": "left" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Ruta local · disponible sin red", "items": ["Actual: assets MP4 y SharedPreferences para likes/favoritos.", "Objetivo: Room/SQLite normaliza posts, usuarios y acciones pendientes.", "Caché: TTL por URL, invalidación por ETag y expulsión LRU por tamaño."] },
+    { "dot": "violet", "title": "Ruta remota · agregación y producción", "items": ["Actual: Pixabay, Giphy y adaptador TikTok se consultan en paralelo e intercalan resultados.", "Objetivo: interceptor adjunta JWT, refresca token ante 401 y aplica retry con backoff ante 429/5xx.", "Contratos: JSON VideoPost; media video/mp4 o HLS application/x-mpegURL; WebSocket para eventos vivos."] },
+    { "dot": "amber", "title": "Cómo explorar", "items": ["Usa las pestañas para enfocar una ruta.", "Haz clic en un nodo o relación para abrir «Más información» con sus dependencias y evidencia.", "Las etiquetas ACTUAL corresponden al repositorio; OBJETIVO es el diseño de producción solicitado."] }
+  ]
+}

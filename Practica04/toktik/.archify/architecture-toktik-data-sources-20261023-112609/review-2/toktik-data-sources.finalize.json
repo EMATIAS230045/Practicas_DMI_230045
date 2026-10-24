@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-10-23T18:19:51.203Z",
+  "specification": {
+    "path": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\candidate.json",
+    "sha256": "161080a07fac3522fd668f441736f6855d909929230a9e9beac6bd72bb647866",
+    "bytes": 10470
+  },
+  "artifact": {
+    "path": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\toktik-data-sources.html",
+    "sha256": "825bf48828df0ec3d9d802e46e7da438f3358440e0983feedc2d3eacf8ccfb3b",
+    "bytes": 794615
+  },
+  "stages": {
+    "validate": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": null,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\matias\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\candidate.json",
+        "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\toktik-data-sources.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "deliver",
+        "receiptId": "56203263-f303-474b-861e-7b98bc072e40",
+        "stage": "render",
+        "type": "architecture",
+        "input": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\candidate.json",
+        "output": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\toktik-data-sources.html",
+        "error": "Renderer failed before emitting a structured diagnostic.",
+        "diagnostics": [
+          {
+            "code": "internal/unclassified",
+            "severity": "error",
+            "message": "Renderer failed before emitting a structured diagnostic.",
+            "subject": {},
+            "evidence": {
+              "exitCode": 1
+            },
+            "supportedFixes": []
+          }
+        ],
+        "provenance": "failed",
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      },
+      "execution": "embedded-in-deliver"
+    },
+    "deliver": {
+      "status": "not-run",
+      "execution": "blocked-by-validate"
+    }
+  },
+  "diagnostics": [
+    {
+      "code": "internal/unclassified",
+      "severity": "error",
+      "message": "Renderer failed before emitting a structured diagnostic.",
+      "subject": {},
+      "evidence": {
+        "exitCode": 1
+      },
+      "supportedFixes": []
+    }
+  ],
+  "evidence": {
+    "receipt": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\review-2\\toktik-data-sources.finalize.json",
+    "summaryReceipt": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\review-2\\toktik-data-sources.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "validate",
+  "finishedAt": "2026-10-23T18:20:03.722Z",
+  "durationMs": 12519,
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "timeout"
+  }
+}

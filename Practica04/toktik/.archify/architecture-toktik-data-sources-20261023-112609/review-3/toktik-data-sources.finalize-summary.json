@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\candidate.json",
+    "sha256": "bf6840db90230fd9ce675d6335a60e82308459e541874f717bb5a7ff6e2d5626",
+    "bytes": 10471
+  },
+  "artifact": {
+    "path": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\toktik-data-sources.html",
+    "sha256": "825bf48828df0ec3d9d802e46e7da438f3358440e0983feedc2d3eacf8ccfb3b",
+    "bytes": 794615
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\review-3\\toktik-data-sources.finalize.json",
+    "summaryReceipt": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\review-3\\toktik-data-sources.finalize-summary.json",
+    "browserCheckReceipt": "C:\\Users\\matias\\Desktop\\Prueba1\\Practicas_DMI_230045\\Practica04\\toktik\\.archify\\architecture-toktik-data-sources-20261023-112609\\review-3\\toktik-data-sources.browser-check.json"
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "timeout"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 58129,
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "resolvedCrossovers": 7,
+      "routesOverSuggestedBends": 5,
+      "routesOverSuggestedStretch": 2
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [
+        {
+          "left": {
+            "from": "repository",
+            "to": "local-source",
+            "label": "Para ti · offline",
+            "collectionIndex": 1,
+            "artifactIndex": 2
+          },
+          "right": {
+            "from": "feed-provider",
+            "to": "prefs",
+            "label": "guarda likes y favoritos",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "point": [
+            538,
+            188
+          ]
+        },
+        {
+          "left": {
+            "from": "combined-source",
+            "to": "giphy",
+            "label": "GET GIFs",
+            "collectionIndex": 6,
+            "artifactIndex": 7
+          },
+          "right": {
+            "from": "combined-source",
+            "to": "tiktok-adapter",
+            "label": "resuelve URLs",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "point": [
+            779,
+            318
+          ],
+          "sharedNode": "combined-source"
+        },
+        {
+          "left": {
+            "from": "api-gateway",
+            "to": "recommendations",
+            "label": "feed paginado",
+            "collectionIndex": 13,
+            "artifactIndex": 14
+          },
+          "right": {
+            "from": "api-gateway",
+            "to": "upload-processing",
+            "label": "subir y transcodificar",
+            "collectionIndex": 14,
+            "artifactIndex": 15
+          },
+          "point": [
+            1322,
+            636
+          ],
+          "sharedNode": "api-gateway"
+        },
+        {
+          "left": {
+            "from": "api-gateway",
+            "to": "recommendations",
+            "label": "feed paginado",
+            "collectionIndex": 13,
+            "artifactIndex": 14
+          },
+          "right": {
+            "from": "api-gateway",
+            "to": "social-api",
+            "label": "interacciones",
+            "collectionIndex": 15,
+            "artifactIndex": 16
+          },
+          "point": [
+            1056,
+            636
+          ],
+          "sharedNode": "api-gateway"
+        },
+        {
+          "left": {
+            "from": "api-gateway",
+            "to": "recommendations",
+            "label": "feed paginado",
+            "collectionIndex": 13,
+            "artifactIndex": 14
+          },
+          "right": {
+            "from": "api-gateway",
+            "to": "live-ws",
+            "label": "upgrade WSS",
+            "collectionIndex": 16,
+            "artifactIndex": 17
+          },
+          "point": [
+            1088.5,
+            636
+          ],
+          "sharedNode": "api-gateway"
+        },
+        {
+          "left": {
+            "from": "api-gateway",
+            "to": "upload-processing",
+            "label": "subir y transcodificar",
+            "collectionIndex": 14,
+            "artifactIndex": 15
+          },
+          "right": {
+            "from": "api-gateway",
+            "to": "social-api",
+            "label": "interacciones",
+            "collectionIndex": 15,
+            "artifactIndex": 16
+          },
+          "point": [
+            1056,
+            648
+          ],
+          "sharedNode": "api-gateway"
+        },
+        {
+          "left": {
+            "from": "api-gateway",
+            "to": "upload-processing",
+            "label": "subir y transcodificar",
+            "collectionIndex": 14,
+            "artifactIndex": 15
+          },
+          "right": {
+            "from": "api-gateway",
+            "to": "live-ws",
+            "label": "upgrade WSS",
+            "collectionIndex": 16,
+            "artifactIndex": 17
+          },
+          "point": [
+            1088.5,
+            648
+          ],
+          "sharedNode": "api-gateway"
+        }
+      ],
+      "detours": [
+        {
+          "relationship": {
+            "from": "repository",
+            "to": "local-source",
+            "label": "Para ti · offline",
+            "collectionIndex": 1,
+            "artifactIndex": 2
+          },
+          "bends": 3,
+          "stretch": 1
+        },
+        {
+          "relationship": {
+            "from": "repository",
+            "to": "http-client",
+            "label": "propuesta: llamadas autenticadas",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "bends": 3,
+          "stretch": 1
+        },
+        {
+          "relationship": {
+            "from": "api-gateway",
+            "to": "jwt-auth",
+            "label": "login / refresh",
+            "collectionIndex": 12,
+            "artifactIndex": 13
+          },
+          "bends": 4,
+          "stretch": 1
+        },
+        {
+          "relationship": {
+            "from": "api-gateway",
+            "to": "recommendations",
+            "label": "feed paginado",
+            "collectionIndex": 13,
+            "artifactIndex": 14
+          },
+          "bends": 4,
+          "stretch": 1.905
+        },
+        {
+          "relationship": {
+            "from": "api-gateway",
+            "to": "upload-processing",
+            "label": "subir y transcodificar",
+            "collectionIndex": 14,
+            "artifactIndex": 15
+          },
+          "bends": 4,
+          "stretch": 1.937
+        }
+      ],
+      "truncated": false
+    },
+    "hints": [
+      "repository → local-source crosses feed-provider → prefs: move the node of whichever is a branch, return, or second entrance to the other side of the main path, so that relationship runs through an empty corridor.",
+      "combined-source → giphy and combined-source → tiktok-adapter cross next to combined-source: move node giphy or tiktok-adapter so the two reach combined-source from different sides (for example one level with it, one directly above or below it).",
+      "api-gateway → recommendations and api-gateway → upload-processing cross next to api-gateway: move node recommendations or upload-processing so the two reach api-gateway from different sides (for example one level with it, one directly above or below it).",
+      "api-gateway → recommendations and api-gateway → social-api cross next to api-gateway: move node recommendations or social-api so the two reach api-gateway from different sides (for example one level with it, one directly above or below it).",
+      "api-gateway → recommendations and api-gateway → live-ws cross next to api-gateway: move node recommendations or live-ws so the two reach api-gateway from different sides (for example one level with it, one directly above or below it).",
+      "api-gateway → upload-processing and api-gateway → social-api cross next to api-gateway: move node upload-processing or social-api so the two reach api-gateway from different sides (for example one level with it, one directly above or below it).",
+      "api-gateway → upload-processing and api-gateway → live-ws cross next to api-gateway: move node upload-processing or live-ws so the two reach api-gateway from different sides (for example one level with it, one directly above or below it).",
+      "repository → local-source needs 3 bends: move node repository or local-source so they share a row or column with matching centers, or sit diagonally with a clear corner."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}
