@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "diagram_type": "tree",
+  "meta": {
+    "title": "Estructura de Directorios - widgets_app",
+    "subtitle": "Jerarquia de modulos y archivos dentro de lib/",
+    "output": "widgets-app-tree.html",
+    "quality_profile": "showcase"
+  },
+  "layout": {
+    "direction": "down"
+  },
+  "nodes": [
+    { "id": "lib", "label": "lib/", "sublabel": "Codigo fuente de Flutter" },
+
+    { "id": "main_dart", "label": "main.dart", "parent": "lib", "sublabel": "ProviderScope y MainApp" },
+    
+    { "id": "config", "label": "config/", "parent": "lib", "sublabel": "Configuraciones globales" },
+    { "id": "cfg_menu", "label": "menu/menu_items.dart", "parent": "config", "sublabel": "Modelo y lista appMenuItems" },
+    { "id": "cfg_router", "label": "router/app_router.dart", "parent": "config", "sublabel": "Instancia GoRouter y rutas" },
+    { "id": "cfg_theme", "label": "theme/app_theme.dart", "parent": "config", "sublabel": "AppTheme y paleta colorList" },
+
+    { "id": "presentation", "label": "presentation/", "parent": "lib", "sublabel": "Capa visual y de estado" },
+    
+    { "id": "pres_providers", "label": "providers/", "parent": "presentation", "sublabel": "Gestores de estado Riverpod" },
+    { "id": "prov_counter", "label": "counter_provider.dart", "parent": "pres_providers", "sublabel": "StateProvider de contador" },
+    { "id": "prov_theme", "label": "theme_provider.dart", "parent": "pres_providers", "sublabel": "ThemeNotifier y StateNotifierProvider" },
+
+    { "id": "pres_widgets", "label": "widgets/", "parent": "presentation", "sublabel": "Widgets reutilizables" },
+    { "id": "wid_sidemenu", "label": "side_menu.dart", "parent": "pres_widgets", "sublabel": "NavigationDrawer lateral" },
+
+    { "id": "pres_screens", "label": "screens/", "parent": "presentation", "sublabel": "Pantallas de la app" },
+    { "id": "scr_home", "label": "home/home_screen.dart", "parent": "pres_screens", "sublabel": "Menu principal de widgets" },
+    { "id": "scr_buttons", "label": "buttons/buttons_screen.dart", "parent": "pres_screens", "sublabel": "Muestrario de botones" },
+    { "id": "scr_cards", "label": "cards/cards_screen.dart", "parent": "pres_screens", "sublabel": "4 variantes de tarjetas" },
+    { "id": "scr_progress", "label": "progress/progress_screen.dart", "parent": "pres_screens", "sublabel": "Indicadores con StreamBuilder" },
+    { "id": "scr_snackbars", "label": "snackbar/snackbar_screen.dart", "parent": "pres_screens", "sublabel": "Snackbars y dialogos" },
+    { "id": "scr_animated", "label": "animated/animated_screen.dart", "parent": "pres_screens", "sublabel": "AnimatedContainer" },
+    { "id": "scr_ui_controls", "label": "ui_controls/ui_controls_screen.dart", "parent": "pres_screens", "sublabel": "Switch, Checkbox y Radio" },
+    { "id": "scr_tutorial", "label": "app_tutorial/app_tutorial_screen.dart", "parent": "pres_screens", "sublabel": "PageView con animacion" },
+    { "id": "scr_infinite", "label": "infinite_scroll/infinite_scroll_screen.dart", "parent": "pres_screens", "sublabel": "Scroll infinito y pull-to-refresh" },
+    { "id": "scr_counter", "label": "counter/counter_screen.dart", "parent": "pres_screens", "sublabel": "Pantalla contador Riverpod" },
+    { "id": "scr_theme", "label": "theme_changer/theme_changer_screen.dart", "parent": "pres_screens", "sublabel": "Selector de colores y modo oscuro" },
+    { "id": "scr_barrel", "label": "screens.dart", "parent": "pres_screens", "sublabel": "Archivo barril de exportaciones" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Separacion Modular", "items": ["Config desacoplada de la UI", "Providers agrupados por dominio", "Pantallas aisladas en sus propias carpetas"] },
+    { "dot": "emerald", "title": "Patron Barril", "items": ["screens.dart simplifica los imports en app_router.dart", "SideMenu desacoplado y reutilizable en el Scaffold"] }
+  ]
+}
+
