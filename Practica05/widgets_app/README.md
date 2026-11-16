@@ -1,9 +1,9 @@
 # Práctica 05 — Widgets App 🚀
 
 <p align="center">
-  <img src="/images.png" alt="Logo de la Universidad Tecnológica de Xicotepec de Juárez" width="180"/>
+  <img src="/Practica05/widgets_app/assets/images/Logos/UTXJ.png" alt="Logo de la Universidad Tecnológica de Xicotepec de Juárez" width="180"/>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="/flutter.png" alt="Logo de Flutter" width="180"/>
+  <img src="/Practica05/widgets_app/assets/images/Logos/flutter.webp" alt="Logo de Flutter" width="180"/>
 </p>
 
 <p align="center">
@@ -32,13 +32,13 @@
 </tr>
 <tr>
 <td align="center">
-<img src="./images/imagen1.jpeg" alt="Imagen 1" width="230"/>
+<img src="./assets/images/Caps/1.jpeg" alt="Imagen 1" width="230"/>
 </td>
 <td align="center">
-<img src="./images/imagen2.jpeg" alt="Imagen 2" width="230"/>
+<img src="./assets/images/Caps/2.jpeg" alt="Imagen 2" width="230"/>
 </td>
 <td align="center">
-<img src="./images/imagen3.jpeg" alt="Imagen 3" width="230"/>
+<img src="./assets/images/Caps/3.jpeg" alt="Imagen 3" width="230"/>
 </td>
 </tr>
 <tr>
@@ -55,10 +55,10 @@
 </tr>
 <tr>
 <td align="center">
-<img src="./images/imagen4.jpeg" alt="Imagen 4" width="230"/>
+<img src="./assets/images/Caps/4.jpeg" alt="Imagen 4" width="230"/>
 </td>
 <td align="center">
-<img src="./images/imagen5.jpeg" alt="Imagen 5" width="230"/>
+<img src="./assets/images/Caps/5.jpeg" alt="Imagen 5" width="230"/>
 </td>
 </tr>
 <tr>
@@ -77,13 +77,13 @@
 </tr>
 <tr>
 <td align="center">
-<img src="./images/imagenes6.jpeg" alt="Imágenes 6" width="230"/>
+<img src="./assets/images/Caps/6.jpeg" alt="Imágenes 6" width="230"/>
 </td>
 <td align="center">
-<img src="./images/imagenes7.jpeg" alt="Imágenes 7" width="230"/>
+<img src="./assets/images/Caps/7.jpeg" alt="Imágenes 7" width="230"/>
 </td>
 <td align="center">
-<img src="./images/imagen8.jpeg" alt="Imagen 8" width="230"/>
+<img src="./assets/images/Caps/8.jpeg" alt="Imagen 8" width="230"/>
 </td>
 </tr>
 <tr>
@@ -100,10 +100,10 @@
 </tr>
 <tr>
 <td align="center">
-<img src="./images/imagen9.jpeg" alt="Imagen 9" width="230"/>
+<img src="./assets/images/Caps/9.jpeg" alt="Imagen 9" width="230"/>
 </td>
 <td align="center">
-<img src="./images/imagen10.jpeg" alt="Imagen 10" width="230"/>
+<img src="./assets/images/Caps/10.jpeg" alt="Imagen 10" width="230"/>
 </td>
 </tr>
 <tr>
@@ -113,6 +113,10 @@
 </table>
 
 ---
+### Apetize
+
+> 🔗 **[Ver en el Dispositivo Virtual](https://appetize.io/app/b_gkf5dbg6tovnoeqvp2xm5m4ndu)**
+---
 
 ## 📌 Objetivo
 Desarrollar una aplicación interactiva en **Flutter** para explorar la biblioteca de componentes de **Material 3**, implementar patrones de navegación avanzada con `GoRouter` y gestionar el estado global mediante **Riverpod**. Cada sección del proyecto demuestra interacciones, animaciones y componentes específicos dentro de un flujo unificado.
@@ -121,10 +125,10 @@ Desarrollar una aplicación interactiva en **Flutter** para explorar la bibliote
 
 ## 🏗️ Diagrama de Arquitectura
 
-> 🔗 **[Ver el Diagrama Interactivo en GitHub Pages](https://jenniferbautistabarrios.github.io/Practicas_DMI_230317/Practica05/arquitectura/arquitectura-practica05.html)**
+> 🔗 **[Ver el Diagrama Interactivo en GitHub Pages](https://EMATIAS230045.github.io/Practicas_DMI_230045/Practica05/widgets_app/diagrams/widgets_app_architecture)**
 
 <p align="center">
-  <img src="./images/Diagrama de Arquitectura.png" alt="Diagrama de Arquitectura" width="90%"/>
+  <img src="./assets/images/Caps/diagrams.png" alt="Diagrama de Arquitectura" width="90%"/>
 </p>
 
 ---
