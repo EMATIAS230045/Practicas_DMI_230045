@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Widgets App - Arquitectura y Estructura Flutter",
+    "subtitle": "Estructura modular con Material 3, Riverpod y GoRouter",
+    "output": "widgets-app-architecture.html",
+    "quality_profile": "showcase",
+    "visual_preset": "classic",
+    "viewBox": [1240, 680]
+  },
+  "components": [
+    { "id": "main_dart", "type": "frontend", "label": "main.dart", "sublabel": "ProviderScope + runApp", "pos": [40, 180], "size": [150, 64] },
+    { "id": "main_app", "type": "frontend", "label": "MainApp", "sublabel": "ConsumerWidget / Router", "pos": [40, 320], "size": [150, 64] },
+    
+    { "id": "app_router", "type": "backend", "label": "AppRouter", "sublabel": "GoRouter (11 rutas)", "pos": [240, 160], "size": [160, 64] },
+    { "id": "menu_items", "type": "backend", "label": "MenuItems", "sublabel": "appMenuItems list", "pos": [240, 290], "size": [160, 64] },
+    { "id": "app_theme", "type": "backend", "label": "AppTheme", "sublabel": "ThemeData (Material 3)", "pos": [240, 420], "size": [160, 64] },
+
+    { "id": "counter_provider", "type": "database", "label": "counterProvider", "sublabel": "StateProvider<int>", "pos": [460, 160], "size": [180, 64] },
+    { "id": "theme_provider", "type": "database", "label": "themeNotifierProvider", "sublabel": "StateNotifierProvider", "pos": [460, 290], "size": [180, 64] },
+    { "id": "theme_notifier", "type": "database", "label": "ThemeNotifier", "sublabel": "StateNotifier<AppTheme>", "pos": [460, 420], "size": [180, 64] },
+
+    { "id": "home_screen", "type": "frontend", "label": "HomeScreen", "sublabel": "ListView & Scaffold", "pos": [700, 220], "size": [160, 64] },
+    { "id": "side_menu", "type": "frontend", "label": "SideMenu", "sublabel": "NavigationDrawer", "pos": [700, 360], "size": [160, 64] },
+
+    { "id": "ui_screens", "type": "frontend", "label": "UI & Widgets", "sublabel": "Buttons, Cards, Animated", "pos": [930, 120], "size": [230, 64] },
+    { "id": "feedback_screens", "type": "frontend", "label": "Feedback & Controls", "sublabel": "Progress, Snackbars, Controls", "pos": [930, 230], "size": [230, 64] },
+    { "id": "flow_screens", "type": "frontend", "label": "Flows & Async", "sublabel": "Tutorial, InfiniteScroll", "pos": [930, 340], "size": [230, 64] },
+    { "id": "state_screens", "type": "frontend", "label": "Reactive Screens", "sublabel": "Counter, ThemeChanger", "pos": [930, 450], "size": [230, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Configuracion & Navegacion", "wraps": ["app_router", "menu_items", "app_theme"] },
+    { "kind": "region", "label": "Gestion de Estado (Riverpod)", "wraps": ["counter_provider", "theme_provider", "theme_notifier"] },
+    { "kind": "region", "label": "Capa de Presentacion (Vistas)", "wraps": ["home_screen", "side_menu", "ui_screens", "feedback_screens", "flow_screens", "state_screens"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "main_dart", "to": "main_app", "label": "arranque", "variant": "emphasis" },
+    { "id": "c2", "from": "main_app", "to": "app_router", "label": "routerConfig" },
+    { "id": "c3", "from": "main_app", "to": "theme_provider", "label": "watch tema", "variant": "emphasis" },
+    { "id": "c4", "from": "theme_provider", "to": "theme_notifier", "label": "controlador" },
+    { "id": "c5", "from": "theme_notifier", "to": "app_theme", "label": "crea estado" },
+    { "id": "c6", "from": "app_router", "to": "home_screen", "label": "ruta / inicial" },
+    { "id": "c7", "from": "menu_items", "to": "home_screen", "label": "items lista" },
+    { "id": "c8", "from": "menu_items", "to": "side_menu", "label": "destinos drawer" },
+    { "id": "c9", "from": "home_screen", "to": "side_menu", "label": "scaffoldKey" },
+    { "id": "c10", "from": "home_screen", "to": "ui_screens", "label": "context.push" },
+    { "id": "c11", "from": "side_menu", "to": "flow_screens", "label": "context.push" },
+    { "id": "c12", "from": "counter_provider", "to": "state_screens", "label": "watch contador" },
+    { "id": "c13", "from": "theme_provider", "to": "state_screens", "label": "watch / read tema" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Capa de Configuracion", "items": ["Enrutamiento centralizado con GoRouter (declarativo)", "Definicion inmutable de temas con ColorSchemeSeed y Material 3", "Catalogo de items del menu como modelo desacoplado"] },
+    { "dot": "emerald", "title": "Gestion de Estado Reactivo", "items": ["Riverpod con ProviderScope global en main.dart", "StateProvider para valores atomicos como clicks", "StateNotifierProvider y ThemeNotifier para mutaciones de tema en vivo"] },
+    { "dot": "violet", "title": "Capa de Presentacion", "items": ["HomeScreen y SideMenu integrados mediante GlobalKey<ScaffoldState>", "Organizacion modular por carpetas en presentation/screens", "Pantallas de widgets con componentes desacoplados y animaciones"] }
+  ]
+}
