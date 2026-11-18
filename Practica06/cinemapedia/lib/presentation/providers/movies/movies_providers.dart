@@ -44,7 +44,11 @@ class MoviesNotifier extends StateNotifier<List<Movie>> {
 
   MoviesNotifier({
     required this.fetchMoreMovies,
-  }): super([]);
+  }): super([]) {
+    // Al crearse el notifier (incluyendo cuando se reconstruye por cambio de idioma),
+    // carga automáticamente la primera página si la lista está vacía.
+    loadNextPage();
+  }
 
   Future<void> loadNextPage() async{
     if ( isLoading ) return;
@@ -54,10 +58,8 @@ class MoviesNotifier extends StateNotifier<List<Movie>> {
     final List<Movie> movies = await fetchMoreMovies( page: currentPage );
     state = [...state, ...movies];
     
-    await Future.delayed(const Duration(milliseconds: 300));
+    // Si viene de caché no demoramos nada innecesario
     isLoading = false;
   }
 
-
 }
-

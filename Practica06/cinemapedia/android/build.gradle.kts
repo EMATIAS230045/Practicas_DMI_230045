@@ -16,6 +16,16 @@ subprojects {
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
 subprojects {
+    plugins.withId("com.android.library") {
+        val android = extensions.getByType(com.android.build.gradle.LibraryExtension::class.java)
+        if (android.namespace == null) {
+            android.namespace = project.group.toString().ifEmpty { "dev.isar.${project.name}" }
+        }
+        android.compileSdk = 35
+    }
+}
+
+subprojects {
     project.evaluationDependsOn(":app")
 }
 

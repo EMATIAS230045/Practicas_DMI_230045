@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinemapedia - Diagrama de Arquitectura Interactivo (Archify Style)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0B0F19;
+      --bg-card: #111726;
+      --bg-card-hover: #161F33;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.22);
+      
+      /* Colores temáticos por capa de Clean Architecture */
+      --layer-presentation: #38BDF8;   /* Azul / Cian */
+      --layer-domain: #10B981;         /* Esmeralda (Núcleo) */
+      --layer-infrastructure: #F59E0B; /* Ámbar / Naranja */
+      --layer-config: #A855F7;         /* Violeta */
+      --layer-external: #F43F5E;       /* Rosa / Coral */
+      
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-main);
+      position: relative;
+    }
+
+    /* Fondo de cuadrícula punteada estilo Archify */
+    .grid-background {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1.2px, transparent 1.2px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Barra Superior estilo Glassmorphism */
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 40;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #38BDF8, #6366F1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: #FFF;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38BDF8;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Buscador y Filtros */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      width: 240px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0 12px 0 34px;
+      color: #FFF;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      width: 280px;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 10px;
+      width: 16px;
+      height: 16px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      color: #FFF;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .filter-btn.active {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFF;
+      font-weight: 600;
+    }
+
+    /* Leyenda de Capas */
+    .legend-bar {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: rgba(17, 23, 38, 0.88);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      z-index: 30;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    /* Controles de Vista Flotantes */
+    .canvas-controls {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(17, 23, 38, 0.88);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      padding: 6px;
+      gap: 4px;
+      z-index: 30;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    .ctrl-btn {
+      width: 36px;
+      height: 36px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .ctrl-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFF;
+    }
+
+    /* Contenedor del Lienzo Pan & Zoom */
+    #viewport {
+      width: 100vw;
+      height: 100vh;
+      cursor: grab;
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+    }
+
+    #viewport.grabbing {
+      cursor: grabbing;
+    }
+
+    #canvas-world {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    /* SVG de Conexiones */
+    #svg-connections {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3200px;
+      height: 2200px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .conn-path {
+      fill: none;
+      stroke-width: 2px;
+      transition: stroke 0.3s, stroke-width 0.3s, opacity 0.3s;
+    }
+
+    .conn-path.runtime {
+      stroke: rgba(255, 255, 255, 0.24);
+      stroke-dasharray: 6 6;
+      animation: dashFlow 25s linear infinite;
+    }
+
+    .conn-path.interface {
+      stroke: rgba(16, 185, 129, 0.4);
+      stroke-dasharray: 4 4;
+    }
+
+    .conn-path.highlighted {
+      stroke-width: 3.5px !important;
+      opacity: 1 !important;
+    }
+
+    .conn-path.dimmed {
+      opacity: 0.08 !important;
+    }
+
+    @keyframes dashFlow {
+      to {
+        stroke-dashoffset: -500;
+      }
+    }
+
+    /* Zonas / Carriles de Arquitectura */
+    .arch-zone {
+      position: absolute;
+      border-radius: 20px;
+      border: 1px dashed;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .arch-zone-label {
+      position: absolute;
+      top: -14px;
+      left: 20px;
+      padding: 2px 14px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Nodos / Tarjetas de Clases */
+    .arch-node {
+      position: absolute;
+      width: 250px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s, border-color 0.2s, opacity 0.3s;
+      z-index: 2;
+    }
+
+    .arch-node:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
+      border-color: var(--border-hover);
+    }
+
+    .arch-node.selected {
+      border-color: #FFF !important;
+      box-shadow: 0 0 0 2px #FFF, 0 16px 36px rgba(0, 0, 0, 0.7) !important;
+    }
+
+    .arch-node.dimmed {
+      opacity: 0.16 !important;
+      transform: scale(0.98);
+      pointer-events: none;
+    }
+
+    .node-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .node-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .node-type-icon {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .node-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFF;
+      margin-bottom: 4px;
+      letter-spacing: -0.2px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .node-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Colores temáticos por nodo */
+    .arch-node[data-layer="presentation"] { border-top: 3px solid var(--layer-presentation); }
+    .arch-node[data-layer="presentation"] .node-badge { background: rgba(56, 189, 248, 0.15); color: var(--layer-presentation); }
+
+    .arch-node[data-layer="domain"] { border-top: 3px solid var(--layer-domain); }
+    .arch-node[data-layer="domain"] .node-badge { background: rgba(16, 185, 129, 0.15); color: var(--layer-domain); }
+
+    .arch-node[data-layer="infrastructure"] { border-top: 3px solid var(--layer-infrastructure); }
+    .arch-node[data-layer="infrastructure"] .node-badge { background: rgba(245, 158, 11, 0.15); color: var(--layer-infrastructure); }
+
+    .arch-node[data-layer="config"] { border-top: 3px solid var(--layer-config); }
+    .arch-node[data-layer="config"] .node-badge { background: rgba(168, 85, 247, 0.15); color: var(--layer-config); }
+
+    .arch-node[data-layer="external"] { border-top: 3px solid var(--layer-external); }
+    .arch-node[data-layer="external"] .node-badge { background: rgba(244, 63, 94, 0.15); color: var(--layer-external); }
+
+    /* Panel Lateral de Inspección (Drawer) */
+    .inspector-drawer {
+      position: absolute;
+      top: 64px;
+      right: 0;
+      bottom: 0;
+      width: 380px;
+      background: rgba(15, 22, 36, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 1px solid var(--border-subtle);
+      box-shadow: -10px 0 35px rgba(0, 0, 0, 0.6);
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .inspector-drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .drawer-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .drawer-close:hover {
+      color: #FFF;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .drawer-content {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .detail-section h4 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .detail-file-path {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-subtle);
+      color: #E2E8F0;
+      word-break: break-all;
+    }
+
+    .detail-description {
+      font-size: 13px;
+      color: #CBD5E1;
+      line-height: 1.6;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .nav-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: #CBD5E1;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-pill:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: #38BDF8;
+    }
+
+    /* Tooltip / Notificaciones */
+    .toast-hint {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+      pointer-events: none;
+      z-index: 25;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid-background"></div>
+
+  <!-- Header Superior -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div>
+        <div class="brand-title">Cinemapedia</div>
+      </div>
+      <span class="brand-badge">Clean Architecture</span>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-box">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input type="text" id="searchInput" placeholder="Buscar clase, widget o archivo..." autocomplete="off">
+      </div>
+
+      <div class="filter-pills">
+        <button class="filter-btn active" data-filter="all">Ver Todo</button>
+        <button class="filter-btn" data-filter="tmdb">Flujo Películas (TMDB)</button>
+        <button class="filter-btn" data-filter="isar">Flujo Favoritos (Isar)</button>
+        <button class="filter-btn" data-filter="state">Navegación y Estado</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="toast-hint">
+    <span>💡 Haz clic en cualquier nodo para inspeccionar sus dependencias y código fuente</span>
+  </div>
+
+  <!-- Lienzo Interactivo Pan & Zoom -->
+  <div id="viewport">
+    <div id="canvas-world">
+      <!-- Conexiones SVG -->
+      <svg id="svg-connections">
+        <defs>
+          <marker id="arrow-runtime" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="rgba(255,255,255,0.4)"/>
+          </marker>
+          <marker id="arrow-interface" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="#10B981"/>
+          </marker>
+          <marker id="arrow-highlight" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="#38BDF8"/>
+          </marker>
+        </defs>
+      </svg>
+
+      <!-- Carriles / Zonas de Clean Architecture -->
+      <div id="zones-container"></div>
+
+      <!-- Nodos de la Arquitectura -->
+      <div id="nodes-container"></div>
+    </div>
+  </div>
+
+  <!-- Leyenda Inferior -->
+  <div class="legend-bar">
+    <div class="legend-item"><div class="legend-dot" style="background: var(--layer-presentation);"></div> Presentation</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--layer-domain);"></div> Domain (Core)</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--layer-infrastructure);"></div> Infrastructure</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--layer-config);"></div> Config / Theme</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--layer-external);"></div> External / DB</div>
+  </div>
+
+  <!-- Controles de Navegación -->
+  <div class="canvas-controls">
+    <button class="ctrl-btn" id="btnZoomIn" title="Acercar (Zoom +)">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+    </button>
+    <button class="ctrl-btn" id="btnZoomOut" title="Alejar (Zoom -)">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/></svg>
+    </button>
+    <button class="ctrl-btn" id="btnReset" title="Centrar diagrama">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+    </button>
+  </div>
+
+  <!-- Drawer Lateral de Inspección -->
+  <aside class="inspector-drawer" id="inspectorDrawer">
+    <div class="drawer-header">
+      <div>
+        <span class="node-badge" id="dLayerBadge">Presentation</span>
+        <h3 id="dTitle" style="font-size: 18px; margin-top: 6px; font-family: 'JetBrains Mono', monospace;">Node Name</h3>
+      </div>
+      <button class="drawer-close" id="btnCloseDrawer">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="drawer-content">
+      <div class="detail-section">
+        <h4>Ubicación en el Proyecto</h4>
+        <div class="detail-file-path" id="dFilePath">lib/...</div>
+      </div>
+
+      <div class="detail-section">
+        <h4>Responsabilidad Arquitectónica</h4>
+        <p class="detail-description" id="dDescription">Descripción del componente...</p>
+      </div>
+
+      <div class="detail-section">
+        <h4>Dependencias Salientes (Utiliza a)</h4>
+        <div class="pill-list" id="dOutgoing"></div>
+      </div>
+
+      <div class="detail-section">
+        <h4>Dependencias Entrantes (Invocado por)</h4>
+        <div class="pill-list" id="dIncoming"></div>
+      </div>
+    </div>
+  </aside>
+
+  <script>
+    // ── DEFINICIÓN EXHAUSTIVA DE NODOS BASADA EN EL PROYECTO REAL CINEMAPEDIA ──
+    const nodes = [
+      // PRESENTATION - UI SCREENS & VIEWS
+      {
+        id: 'home_screen',
+        title: 'HomeScreen',
+        layer: 'presentation',
+        sub: 'Scaffold principal con BottomNavigation y Drawer',
+        file: 'lib/presentation/screens/movies/home_screen.dart',
+        desc: 'Pantalla raíz con PageView que administra las 3 vistas principales (HomeView, PopularView, FavoritesView) y aloja el CustomDrawer.',
+        x: 80, y: 160,
+        flow: ['state', 'tmdb', 'isar']
+      },
+      {
+        id: 'home_view',
+        title: 'HomeView',
+        layer: 'presentation',
+        sub: 'Carrusel MoviesSlideshow y Listas Horizontales',
+        file: 'lib/presentation/views/movies/home_view.dart',
+        desc: 'Vista con CustomScrollView que orquesta el carrusel principal de películas/series y las listas de En Cines, Próximamente y Mejor Calificadas.',
+        x: 80, y: 340,
+        flow: ['tmdb', 'state']
+      },
+      {
+        id: 'movie_screen',
+        title: 'MovieScreen',
+        layer: 'presentation',
+        sub: 'Detalle de película / serie',
+        file: 'lib/presentation/screens/movies/movie_screen.dart',
+        desc: 'Pantalla de detalles con CustomSliverAppBar, botón de favoritos reactivo, sinopsis, reparto de actores, clasificación por país y videos.',
+        x: 80, y: 560,
+        flow: ['tmdb', 'isar']
+      },
+      {
+        id: 'favorites_view',
+        title: 'FavoritesView',
+        layer: 'presentation',
+        sub: 'Cuadrícula Masonry de Favoritos',
+        file: 'lib/presentation/views/movies/favorites_view.dart',
+        desc: 'Consume favoriteMoviesProvider para renderizar las películas guardadas localmente en la base de datos Isar.',
+        x: 80, y: 780,
+        flow: ['isar']
+      },
+
+      // PRESENTATION - WIDGETS
+      {
+        id: 'movies_slideshow',
+        title: 'MoviesSlideshow',
+        layer: 'presentation',
+        sub: 'Carrusel con Swiper y flechas interactivas',
+        file: 'lib/presentation/widgets/movies/movies_slideshow.dart',
+        desc: 'Carrusel interactivo que soporta 1 clic (siguiente/anterior) y doble clic (primera/última tarjeta) con tarjetas estructuradas y Shimmer.',
+        x: 400, y: 220,
+        flow: ['tmdb']
+      },
+      {
+        id: 'custom_drawer',
+        title: 'CustomDrawer',
+        layer: 'presentation',
+        sub: 'Selector de Películas/Series y 7 Idiomas',
+        file: 'lib/presentation/widgets/shared/custom_drawer.dart',
+        desc: 'Menú hamburguesa con SegmentedButton para alternar entre películas/series y lista de 7 idiomas con bandera y código de región.',
+        x: 400, y: 40,
+        flow: ['state']
+      },
+      {
+        id: 'custom_appbar',
+        title: 'CustomAppbar',
+        layer: 'presentation',
+        sub: 'Barra superior con buscador integrado',
+        file: 'lib/presentation/widgets/shared/custom_appbar.dart',
+        desc: 'Encabezado con logotipo, insignia de categoría y botón de búsqueda conectada con SearchMovieDelegate.',
+        x: 400, y: 420,
+        flow: ['state', 'tmdb']
+      },
+
+      // PRESENTATION - RIVERPOD PROVIDERS
+      {
+        id: 'locale_provider',
+        title: 'localeProvider',
+        layer: 'presentation',
+        sub: 'StateProvider<Locale> & ContentType',
+        file: 'lib/presentation/providers/locale_provider.dart',
+        desc: 'Estado global del idioma (7 opciones: US, MX, CO, DE, CN, EG, RU) y tipo de contenido (Movies vs TV) que reactivamente actualiza la app.',
+        x: 740, y: 40,
+        flow: ['state', 'tmdb']
+      },
+      {
+        id: 'movies_providers',
+        title: 'nowPlaying / popularProviders',
+        layer: 'presentation',
+        sub: 'StateNotifierProvider<List<Movie>>',
+        file: 'lib/presentation/providers/movies/movies_providers.dart',
+        desc: 'Controladores de paginación que consumen movieRepositoryProvider para alimentar los listados de la interfaz gráfica.',
+        x: 740, y: 240,
+        flow: ['tmdb']
+      },
+      {
+        id: 'movie_info_provider',
+        title: 'movieInfoProvider',
+        layer: 'presentation',
+        sub: 'Caché de Detalles en Memoria',
+        file: 'lib/presentation/providers/movies/movie_info_provider.dart',
+        desc: 'Mapeo reactivo Map<String, Movie> para no re-descargar los detalles de películas ya visitadas por el usuario.',
+        x: 740, y: 460,
+        flow: ['tmdb']
+      },
+      {
+        id: 'favorite_movies_provider',
+        title: 'favoriteMoviesProvider',
+        layer: 'presentation',
+        sub: 'Sincronización reactiva con Isar',
+        file: 'lib/presentation/providers/storage/favorite_movies_provider.dart',
+        desc: 'StateNotifier que gestiona el estado en memoria de favoritos e invoca toggleFavorite en la base de datos local Isar.',
+        x: 740, y: 720,
+        flow: ['isar']
+      },
+
+      // CONFIG
+      {
+        id: 'app_router',
+        title: 'AppRouter (GoRouter)',
+        layer: 'config',
+        sub: 'Rutas dinámicas y deep-linking',
+        file: 'lib/config/router/app_router.dart',
+        desc: 'Define las rutas declarativas /home/:page y /home/:page/movie/:id con soporte de transición animada.',
+        x: 80, y: 40,
+        flow: ['state']
+      },
+      {
+        id: 'environment',
+        title: 'Environment (.env)',
+        layer: 'config',
+        sub: 'Lectura de llaves API TheMovieDB',
+        file: 'lib/config/constants/environment.dart',
+        desc: 'Encapsula la lectura de theMovieDbKey mediante flutter_dotenv sin exponer credenciales en el código fuente.',
+        x: 1450, y: 40,
+        flow: ['tmdb']
+      },
+
+      // DOMAIN - ENTITIES (CORE)
+      {
+        id: 'movie_entity',
+        title: 'Movie (Entity)',
+        layer: 'domain',
+        sub: 'Modelo de Negocio Puro & Isar Schema',
+        file: 'lib/domain/entities/movie.dart',
+        desc: 'Entidad central del sistema con id, título, póster, rating, sinopsis y anotaciones @collection para persistencia en Isar.',
+        x: 1100, y: 420,
+        flow: ['tmdb', 'isar']
+      },
+      {
+        id: 'actor_entity',
+        title: 'Actor (Entity)',
+        layer: 'domain',
+        sub: 'Entidad pura de actores',
+        file: 'lib/domain/entities/actor.dart',
+        desc: 'Representa un actor del elenco con id, name, profilePath y character.',
+        x: 1100, y: 640,
+        flow: ['tmdb']
+      },
+
+      // DOMAIN - REPOSITORY & DATASOURCE INTERFACES (PORTS)
+      {
+        id: 'movies_repository_iface',
+        title: 'MoviesRepository',
+        layer: 'domain',
+        sub: 'Contrato abstracto de Películas/Series',
+        file: 'lib/domain/repositories/movies_repository.dart',
+        desc: 'Interfaz abstracta que define las operaciones getNowPlaying, getPopular, getUpcoming, getMovieById y searchMovies.',
+        x: 1100, y: 220,
+        flow: ['tmdb']
+      },
+      {
+        id: 'local_storage_repository_iface',
+        title: 'LocalStorageRepository',
+        layer: 'domain',
+        sub: 'Contrato de Persistencia Local',
+        file: 'lib/domain/repositories/local_storage_repository.dart',
+        desc: 'Interfaz pura que abstrae toggleFavorite, isMovieFavorite y loadMovies sin conocer la base de datos subyacente.',
+        x: 1100, y: 780,
+        flow: ['isar']
+      },
+
+      // INFRASTRUCTURE - REPOSITORIES IMPLEMENTATIONS
+      {
+        id: 'movie_repository_impl',
+        title: 'MovieRepositoryImpl',
+        layer: 'infrastructure',
+        sub: 'Implementa MoviesRepository',
+        file: 'lib/infrastructure/repositories/movie_repository_impl.dart',
+        desc: 'Delega las operaciones a la interfaz MoviesDatasource respetando el principio de inversión de dependencias.',
+        x: 1450, y: 220,
+        flow: ['tmdb']
+      },
+      {
+        id: 'local_storage_impl',
+        title: 'LocalStorageRepositoryImpl',
+        layer: 'infrastructure',
+        sub: 'Implementa LocalStorageRepository',
+        file: 'lib/infrastructure/repositories/local_storage_repository_impl.dart',
+        desc: 'Conecta las llamadas de dominio con el datasource local concreto IsarDatasource.',
+        x: 1450, y: 780,
+        flow: ['isar']
+      },
+
+      // INFRASTRUCTURE - DATASOURCES
+      {
+        id: 'moviedb_datasource',
+        title: 'MoviedbDatasource',
+        layer: 'infrastructure',
+        sub: 'Cliente Dio con Caché Multilingüe',
+        file: 'lib/infrastructure/datasources/moviedb_datasource.dart',
+        desc: 'Consume TheMovieDB REST API vía Dio. Incluye caché local en memoria por idioma/endpoint y soporta Películas y Series.',
+        x: 1800, y: 220,
+        flow: ['tmdb']
+      },
+      {
+        id: 'isar_datasource',
+        title: 'IsarDatasource',
+        layer: 'infrastructure',
+        sub: 'Persistencia NoSQL en Disco',
+        file: 'lib/infrastructure/datasources/isar_datasource.dart',
+        desc: 'Gestiona la instancia de Isar DB local, transacciones síncronas de guardado/borrado y filtros de películas favoritas.',
+        x: 1800, y: 780,
+        flow: ['isar']
+      },
+
+      // INFRASTRUCTURE - MAPPERS & MODELS
+      {
+        id: 'movie_mapper',
+        title: 'MovieMapper',
+        layer: 'infrastructure',
+        sub: 'Transformación DTO -> Entidad',
+        file: 'lib/infrastructure/mappers/movie_mapper.dart',
+        desc: 'Convierte MovieMovieDB y MovieDetails (JSON de TMDB) a la entidad pura Movie asegurando URLs válidas de póster.',
+        x: 1800, y: 460,
+        flow: ['tmdb']
+      },
+
+      // EXTERNAL SERVICES & PERSISTENCE
+      {
+        id: 'tmdb_api',
+        title: 'TheMovieDB REST API',
+        layer: 'external',
+        sub: 'API externa v3 (Dio HTTP)',
+        file: 'https://api.themoviedb.org/3',
+        desc: 'Servicio en la nube que provee catálogo de películas, series, pósters, videos de YouTube y clasificaciones por país.',
+        x: 2160, y: 220,
+        flow: ['tmdb']
+      },
+      {
+        id: 'isar_db',
+        title: 'Isar Database Engine',
+        layer: 'external',
+        sub: 'Base de datos NoSQL móvil',
+        file: 'App Documents Directory (Path Provider)',
+        desc: 'Motor de base de datos embebido de alto rendimiento en C++ que guarda físicamente los favoritos en el almacenamiento del dispositivo.',
+        x: 2160, y: 780,
+        flow: ['isar']
+      }
+    ];
+
+    // ── CONEXIONES ARQUITECTÓNICAS ENTRE NODOS ──
+    const edges = [
+      // Presentation -> Presentation
+      { from: 'home_screen', to: 'home_view', type: 'runtime' },
+      { from: 'home_screen', to: 'favorites_view', type: 'runtime' },
+      { from: 'home_screen', to: 'custom_drawer', type: 'runtime' },
+      { from: 'home_view', to: 'custom_appbar', type: 'runtime' },
+      { from: 'home_view', to: 'movies_slideshow', type: 'runtime' },
+      { from: 'home_view', to: 'movie_screen', type: 'runtime' },
+      { from: 'movies_slideshow', to: 'movie_screen', type: 'runtime' },
+      { from: 'custom_drawer', to: 'locale_provider', type: 'runtime' },
+      { from: 'custom_appbar', to: 'movie_screen', type: 'runtime' },
+
+      // Presentation -> Providers
+      { from: 'home_view', to: 'movies_providers', type: 'runtime' },
+      { from: 'home_view', to: 'locale_provider', type: 'runtime' },
+      { from: 'movie_screen', to: 'movie_info_provider', type: 'runtime' },
+      { from: 'movie_screen', to: 'favorite_movies_provider', type: 'runtime' },
+      { from: 'favorites_view', to: 'favorite_movies_provider', type: 'runtime' },
+
+      // Providers -> Domain Repositories (Inversión de Dependencias)
+      { from: 'movies_providers', to: 'movies_repository_iface', type: 'runtime' },
+      { from: 'movie_info_provider', to: 'movies_repository_iface', type: 'runtime' },
+      { from: 'favorite_movies_provider', to: 'local_storage_repository_iface', type: 'runtime' },
+
+      // Domain Interfaces -> Entities
+      { from: 'movies_repository_iface', to: 'movie_entity', type: 'interface' },
+      { from: 'local_storage_repository_iface', to: 'movie_entity', type: 'interface' },
+
+      // Infrastructure -> Domain (Implementación de Interfaces)
+      { from: 'movie_repository_impl', to: 'movies_repository_iface', type: 'interface' },
+      { from: 'local_storage_impl', to: 'local_storage_repository_iface', type: 'interface' },
+
+      // Infrastructure Repositories -> Infrastructure Datasources
+      { from: 'movie_repository_impl', to: 'moviedb_datasource', type: 'runtime' },
+      { from: 'local_storage_impl', to: 'isar_datasource', type: 'runtime' },
+
+      // Infrastructure Datasources -> External & Mappers
+      { from: 'moviedb_datasource', to: 'movie_mapper', type: 'runtime' },
+      { from: 'movie_mapper', to: 'movie_entity', type: 'runtime' },
+      { from: 'moviedb_datasource', to: 'environment', type: 'runtime' },
+      { from: 'moviedb_datasource', to: 'tmdb_api', type: 'runtime' },
+      { from: 'isar_datasource', to: 'isar_db', type: 'runtime' },
+      { from: 'isar_datasource', to: 'movie_entity', type: 'runtime' },
+
+      // Router
+      { from: 'app_router', to: 'home_screen', type: 'runtime' },
+      { from: 'app_router', to: 'movie_screen', type: 'runtime' }
+    ];
+
+    // ── ZONAS / CARRILES DE ARQUITECTURA ──
+    const zones = [
+      {
+        title: 'Capa 1: Presentación (UI & Riverpod Providers)',
+        color: 'var(--layer-presentation)',
+        x: 50, y: -20, w: 980, h: 960
+      },
+      {
+        title: 'Capa 2: Dominio (Entidades & Puertos de Abstracción)',
+        color: 'var(--layer-domain)',
+        x: 1060, y: 150, w: 320, h: 790
+      },
+      {
+        title: 'Capa 3: Infraestructura (Implementaciones & Mappers)',
+        color: 'var(--layer-infrastructure)',
+        x: 1410, y: 150, w: 680, h: 790
+      },
+      {
+        title: 'Servicios Externos & Persistencia',
+        color: 'var(--layer-external)',
+        x: 2120, y: 150, w: 340, h: 790
+      }
+    ];
+
+    // ── RENDERIZADO DEL DIAGRAMA ──
+    const nodesContainer = document.getElementById('nodes-container');
+    const zonesContainer = document.getElementById('zones-container');
+    const svgConnections = document.getElementById('svg-connections');
+
+    function renderZones() {
+      zonesContainer.innerHTML = zones.map(z => `
+        <div class="arch-zone" style="left: ${z.x}px; top: ${z.y}px; width: ${z.w}px; height: ${z.h}px; border-color: ${z.color}33; background: ${z.color}05;">
+          <span class="arch-zone-label" style="background: ${z.color}22; color: ${z.color}; border: 1px solid ${z.color}44;">
+            ${z.title}
+          </span>
+        </div>
+      `).join('');
+    }
+
+    function renderNodes() {
+      nodesContainer.innerHTML = nodes.map(n => `
+        <div class="arch-node" id="node-${n.id}" data-id="${n.id}" data-layer="${n.layer}" style="left: ${n.x}px; top: ${n.y}px;">
+          <div class="node-header">
+            <span class="node-badge">${n.layer}</span>
+            <span class="node-type-icon">${getNodeIcon(n.layer)}</span>
+          </div>
+          <div class="node-title">${n.title}</div>
+          <div class="node-subtitle">${n.sub}</div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.arch-node').forEach(nodeEl => {
+        nodeEl.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectNode(nodeEl.dataset.id);
+        });
+      });
+    }
+
+    function getNodeIcon(layer) {
+      switch(layer) {
+        case 'presentation': return '📱';
+        case 'domain': return '💎';
+        case 'infrastructure': return '⚙️';
+        case 'config': return '🔧';
+        case 'external': return '☁️';
+        default: return '📦';
+      }
+    }
+
+    function renderConnections() {
+      // Remover rutas previas (manteniendo defs)
+      svgConnections.querySelectorAll('.conn-path').forEach(p => p.remove());
+
+      edges.forEach((edge, idx) => {
+        const fromNode = nodes.find(n => n.id === edge.from);
+        const toNode = nodes.find(n => n.id === edge.to);
+        if (!fromNode || !toNode) return;
+
+        // Calcular puntos de anclaje (izq/der o arriba/abajo según posición relativa)
+        const nodeW = 250;
+        const nodeH = 90;
+
+        let startX, startY, endX, endY;
+
+        if (fromNode.x < toNode.x) {
+          startX = fromNode.x + nodeW;
+          startY = fromNode.y + (nodeH / 2);
+          endX = toNode.x;
+          endY = toNode.y + (nodeH / 2);
+        } else {
+          startX = fromNode.x + (nodeW / 2);
+          startY = fromNode.y + nodeH;
+          endX = toNode.x + (nodeW / 2);
+          endY = toNode.y;
+        }
+
+        const dx = Math.abs(endX - startX) * 0.5;
+        const pathData = `M ${startX} ${startY} C ${startX + dx} ${startY}, ${endX - dx} ${endY}, ${endX} ${endY}`;
+
+        const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        pathEl.setAttribute('d', pathData);
+        pathEl.setAttribute('id', `edge-${edge.from}-${edge.to}`);
+        pathEl.setAttribute('class', `conn-path ${edge.type}`);
+        pathEl.setAttribute('marker-end', edge.type === 'interface' ? 'url(#arrow-interface)' : 'url(#arrow-runtime)');
+
+        svgConnections.appendChild(pathEl);
+      });
+    }
+
+    // ── GESTIÓN DE INSPECCIÓN & HIGHLIGHTING ──
+    const drawer = document.getElementById('inspectorDrawer');
+    const dTitle = document.getElementById('dTitle');
+    const dLayerBadge = document.getElementById('dLayerBadge');
+    const dFilePath = document.getElementById('dFilePath');
+    const dDescription = document.getElementById('dDescription');
+    const dOutgoing = document.getElementById('dOutgoing');
+    const dIncoming = document.getElementById('dIncoming');
+
+    function selectNode(nodeId) {
+      const node = nodes.find(n => n.id === nodeId);
+      if (!node) return;
+
+      // Resaltar nodo seleccionado
+      document.querySelectorAll('.arch-node').forEach(el => {
+        el.classList.remove('selected', 'dimmed');
+        if (el.dataset.id !== nodeId) el.classList.add('dimmed');
+      });
+      document.getElementById(`node-${nodeId}`).classList.remove('dimmed');
+      document.getElementById(`node-${nodeId}`).classList.add('selected');
+
+      // Buscar conexiones directas
+      const outgoingEdges = edges.filter(e => e.from === nodeId);
+      const incomingEdges = edges.filter(e => e.to === nodeId);
+
+      // Resaltar rutas y nodos conectados
+      document.querySelectorAll('.conn-path').forEach(p => {
+        p.classList.remove('highlighted', 'dimmed');
+        p.classList.add('dimmed');
+      });
+
+      outgoingEdges.forEach(e => {
+        const path = document.getElementById(`edge-${e.from}-${e.to}`);
+        if (path) {
+          path.classList.remove('dimmed');
+          path.classList.add('highlighted');
+          path.setAttribute('marker-end', 'url(#arrow-highlight)');
+        }
+        document.getElementById(`node-${e.to}`)?.classList.remove('dimmed');
+      });
+
+      incomingEdges.forEach(e => {
+        const path = document.getElementById(`edge-${e.from}-${e.to}`);
+        if (path) {
+          path.classList.remove('dimmed');
+          path.classList.add('highlighted');
+          path.setAttribute('marker-end', 'url(#arrow-highlight)');
+        }
+        document.getElementById(`node-${e.from}`)?.classList.remove('dimmed');
+      });
+
+      // Llenar panel Drawer
+      dTitle.textContent = node.title;
+      dLayerBadge.textContent = node.layer;
+      dLayerBadge.style.color = `var(--layer-${node.layer})`;
+      dLayerBadge.style.background = `var(--layer-${node.layer})22`;
+      dFilePath.textContent = node.file;
+      dDescription.textContent = node.desc;
+
+      // Dependencias Salientes
+      dOutgoing.innerHTML = outgoingEdges.length ? outgoingEdges.map(e => {
+        const target = nodes.find(n => n.id === e.to);
+        return `<span class="nav-pill" onclick="selectNode('${e.to}')">→ ${target ? target.title : e.to}</span>`;
+      }).join('') : '<span style="color:var(--text-dim);font-size:12px;">Sin dependencias salientes</span>';
+
+      // Dependencias Entrantes
+      dIncoming.innerHTML = incomingEdges.length ? incomingEdges.map(e => {
+        const source = nodes.find(n => n.id === e.from);
+        return `<span class="nav-pill" onclick="selectNode('${e.from}')">← ${source ? source.title : e.from}</span>`;
+      }).join('') : '<span style="color:var(--text-dim);font-size:12px;">Sin invocadores directos</span>';
+
+      drawer.classList.add('open');
+    }
+
+    function resetSelection() {
+      document.querySelectorAll('.arch-node').forEach(el => el.classList.remove('selected', 'dimmed'));
+      document.querySelectorAll('.conn-path').forEach(p => {
+        p.classList.remove('highlighted', 'dimmed');
+        const isInterface = p.classList.contains('interface');
+        p.setAttribute('marker-end', isInterface ? 'url(#arrow-interface)' : 'url(#arrow-runtime)');
+      });
+      drawer.classList.remove('open');
+    }
+
+    document.getElementById('btnCloseDrawer').addEventListener('click', resetSelection);
+
+    // ── PAN & ZOOM DEL LIENZO (CANVAS INTERACTIVO) ──
+    const viewport = document.getElementById('viewport');
+    const world = document.getElementById('canvas-world');
+
+    let scale = 0.85;
+    let panX = 40;
+    let panY = 70;
+    let isPanning = false;
+    let startX = 0;
+    let startY = 0;
+
+    function updateTransform() {
+      world.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+    }
+
+    viewport.addEventListener('mousedown', (e) => {
+      if (e.target.closest('.arch-node') || e.target.closest('.inspector-drawer')) return;
+      isPanning = true;
+      startX = e.clientX - panX;
+      startY = e.clientY - panY;
+      viewport.classList.add('grabbing');
+      resetSelection();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isPanning) return;
+      panX = e.clientX - startX;
+      panY = e.clientY - startY;
+      updateTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+      isPanning = false;
+      viewport.classList.remove('grabbing');
+    });
+
+    viewport.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomFactor = 0.08;
+      const oldScale = scale;
+
+      if (e.deltaY < 0) {
+        scale = Math.min(scale + zoomFactor, 1.8);
+      } else {
+        scale = Math.max(scale - zoomFactor, 0.35);
+      }
+
+      // Zoom centrado hacia el cursor
+      const rect = viewport.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      panX = mouseX - (mouseX - panX) * (scale / oldScale);
+      panY = mouseY - (mouseY - panY) * (scale / oldScale);
+
+      updateTransform();
+    }, { passive: false });
+
+    // Botones de control
+    document.getElementById('btnZoomIn').addEventListener('click', () => {
+      scale = Math.min(scale + 0.15, 1.8);
+      updateTransform();
+    });
+
+    document.getElementById('btnZoomOut').addEventListener('click', () => {
+      scale = Math.max(scale - 0.15, 0.35);
+      updateTransform();
+    });
+
+    document.getElementById('btnReset').addEventListener('click', () => {
+      scale = 0.85;
+      panX = 40;
+      panY = 70;
+      updateTransform();
+      resetSelection();
+    });
+
+    // ── FILTROS Y BUSCADOR EN TIEMPO REAL ──
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      if (!q) {
+        resetSelection();
+        return;
+      }
+
+      document.querySelectorAll('.arch-node').forEach(nodeEl => {
+        const id = nodeEl.dataset.id;
+        const node = nodes.find(n => n.id === id);
+        const match = node.title.toLowerCase().includes(q) || 
+                      node.file.toLowerCase().includes(q) || 
+                      node.sub.toLowerCase().includes(q);
+
+        if (match) {
+          nodeEl.classList.remove('dimmed');
+          nodeEl.style.boxShadow = '0 0 16px rgba(56, 189, 248, 0.7)';
+        } else {
+          nodeEl.classList.add('dimmed');
+          nodeEl.style.boxShadow = '';
+        }
+      });
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+        if (filter === 'all') {
+          resetSelection();
+          return;
+        }
+
+        document.querySelectorAll('.arch-node').forEach(nodeEl => {
+          const id = nodeEl.dataset.id;
+          const node = nodes.find(n => n.id === id);
+          if (node.flow.includes(filter)) {
+            nodeEl.classList.remove('dimmed');
+          } else {
+            nodeEl.classList.add('dimmed');
+          }
+        });
+
+        document.querySelectorAll('.conn-path').forEach(p => {
+          p.classList.add('dimmed');
+        });
+      });
+    });
+
+    // Inicialización
+    renderZones();
+    renderNodes();
+    renderConnections();
+    updateTransform();
+  </script>
+</body>
+</html>
