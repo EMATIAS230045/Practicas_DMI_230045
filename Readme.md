@@ -30,7 +30,7 @@ A continuación se detalla el progreso y el estado de las actividades desarrolla
 | **3** | **Práctica 03:** Yes No App | Chat en Flutter que responde *Sí*, *No* o *Tal vez* a preguntas y muestra un GIF. | [Ver Práctica 3](/Practica03/yes_no_app/) | 30 | ✅ Concluida |
 | **4** | **Práctica 04:** TOKTIK |Aplicacion que simula o intenta parecerse a tiktok imitando su comportamiento y configuraciones especiales. | [Ver Práctica 4](/Practica04/toktik/) | 30 | ✅ Concluida |
 | **5** | **Práctica 05:** TOKTIK |Aplicacion que muestra todos los widgets utilizables de flutter. | [Ver Práctica 5](/Practica05/widgets_app/) | 40 | ✅ Concluida |
-| **5** | **Práctica 05:** TOKTIK |Aplicacion que muestra peliculas y series de forma dinamica. | [Ver Práctica 6](/Practica06/cinemapedia/) | 100 | ✅ Concluida |
+| **6** | **Práctica 06:** Cinemapedia |Aplicacion que muestra peliculas y series de forma dinamica. | [Ver Práctica 6](/Practica06/cinemapedia/) | 100 | ✅ Concluida |
 
 ---
 
